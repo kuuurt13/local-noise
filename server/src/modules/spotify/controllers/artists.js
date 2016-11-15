@@ -9,8 +9,12 @@ router.get('/artists/:id', getArtistById);
 async function getArtists(req, res) {
   const { query } = req.query;
 
-  let artists = await artistSearch(query);
-  res.status(200).json(artists);
+  try {
+    let artists = await artistSearch(query);
+    res.status(200).json(artists);
+  } catch(error) {
+    res.status(404).json(error);
+  }
 }
 
 async function getArtistById(req, res) {
