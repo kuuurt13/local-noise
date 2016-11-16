@@ -2,15 +2,19 @@ import "babel-polyfill";
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import config from './config/app';
+/* Configs */
+import appConfig from './configs/app';
+
+/* Routes */
 import moduleRoutes from './modules/module.routes';
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 
+/* Register Routes */
 moduleRoutes.forEach(ctrl => {
-  const url = [config.apiUrl, ctrl.url].join('');
+  const url = [appConfig.apiUrl, ctrl.url].join('');
 
   ctrl.routes.forEach(route => {
     app.use(url, route);
