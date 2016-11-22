@@ -9,7 +9,7 @@ router.use('/artists', searchCachedArtists);
 
 router.get('/artists/tracks', getArtistTopTracks);
 router.get('/artists/:id', getArtistById);
-router.get('/artists', getArtists);
+router.get('/artists', getArtist);
 
 /* Middleware */
 async function searchCachedArtists(req, res, next) {
@@ -43,7 +43,7 @@ async function getArtistTopTracks(req, res) {
   }
 }
 
-async function getArtists(req, res) {
+async function getArtist(req, res) {
   const { query } = req.query;
   const { id } = req;
 

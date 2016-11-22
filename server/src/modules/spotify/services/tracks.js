@@ -2,7 +2,6 @@ import redis from '../../../shared/redis';
 import spotifySearch from './search';
 import { artistSearch } from '../services/artists';
 
-import spotify from './search';
 
 export async function artistTrackSearch(artistName, id) {
     try {
