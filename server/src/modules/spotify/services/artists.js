@@ -2,17 +2,17 @@ import redis from '../../../shared/redis';
 import stringsMatch from '../../../shared/stringsMatch';
 import spotify from './search';
 
-export async function artistSearch(artist) {
+export async function artistSearch(artistName) {
   try {
-    let { artists } = await spotify.search('artist', { artist });
+    let { artists } = await spotify.search('artist', { artist: artistName });
     let artist = artists.items.find(artist => {
-      return stringsMatch(artist.name, artist);
+      return stringsMatch(artist.name, artistName);
     });
 
     if (artist) {
       const { id } = artist;
 
-      redis.set(artist, { id });
+      redis.set(artistName, { id });
       return artistById(id);
     }
 
