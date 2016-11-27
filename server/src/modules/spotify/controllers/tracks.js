@@ -1,5 +1,5 @@
 import express from 'express';
-import spotifyApi from '../services/search';
+import { trackSearch } from '../services/tracks';
 
 const router = express.Router();
 
@@ -9,8 +9,9 @@ router.get('/tracks', searchTracks);
 async function searchTracks(req, res) {
   const { artist, track } = req.query;
 
-  const tracks = await spotifyApi.search('tracks', { artist, track });
-  res.status(200).json(tracks);
+  const tracks = await trackSearch(track, artist);
+
+  res.status(200).json(artist ? tracks.track : tracks);
 }
 
 export default router;

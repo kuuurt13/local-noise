@@ -5,7 +5,6 @@ import config from '../../../configs/spotify';
 const { apiUrl } = config;
 
 //TODO: Clean up search
-
 function search(action, params) {
   let { artist, track } = params;
 
@@ -24,7 +23,7 @@ function searchArtists(q) {
 }
 
 function searchTracks(track, artist) {
-  const q = `artist:${artist} ${track}`;
+  const q = artist ? `artist:${artist} ${track}` : track;
   const params = { q , type: 'track' };
 
   return get('/search', params);

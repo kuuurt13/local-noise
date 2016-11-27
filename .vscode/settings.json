@@ -2,7 +2,8 @@
 {
   "files.exclude": {
     "**/node_modules": true,
-    "**/server/dist": true
+    "**/server/dist": true,
+    ".vscode": true
   },
   "search.exclude": {
     "**/node_modules": true,
