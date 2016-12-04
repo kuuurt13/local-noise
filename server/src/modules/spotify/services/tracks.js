@@ -18,8 +18,12 @@ export async function artistTrackSearch(artistName, id) {
 
     const { tracks } = await getArtistTracksById(id || artist.id);
 
-    const trackIds = tracks.map(track => track.id);
-    redis.set(artistName, { id, trackIds });
+    const mappedTracks = tracks.reduce((tracks, track) => {
+      tracks[track.name] = track.id;
+      return tracks;
+    }, {});
+
+    redis.set(artistName, { id, tracks: mappedTracks });
 
     return Promise.resolve(trackIds);
   } catch (error) {
@@ -51,7 +55,6 @@ export function getArtistTracksById(id) {
   return spotifySearch.get(`/artists/${id}/top-tracks`, { country: 'US' });
 }
 
-// Private Methods
 function hasArtist(artistName, artists) {
   return artists.some(artist => stringsMatch(artist.name, artistName));
 }

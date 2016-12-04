@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.use('/artists', searchCachedArtists);
 
-router.get('/artists/tracks', getArtistTopTracks);
+router.get('/artists/tracks', getArtistTracks);
 router.get('/artists/:id', getArtistById);
 router.get('/artists', getArtist);
 
@@ -17,27 +17,30 @@ async function searchCachedArtists(req, res, next) {
   const artist = await redis.get(query);
 
   if (artist) {
-    const { id, trackIds } = artist;
+    const { id, tracks } = artist;
 
     req.id = id;
-    req.trackIds = trackIds;
+    req.tracks = tracks;
   }
 
   next();
 }
 
 /* Routes */
-async function getArtistTopTracks(req, res) {
+async function getArtistTracks(req, res) {
   const { query } = req.query;
-  const { id, trackIds } = req;
+  const { id, tracks } = req;
 
-  if (trackIds) {
-    return res.status(200).json(trackIds);
+  console.log(id, tracks);
+
+  if (tracks) {
+    return res.status(200).json(tracks);
   }
 
   try {
-    const tracks = await artistTrackSearch(query, id);
-    return res.status(200).json(tracks);
+    const artistTracks = await artistTrackSearch(query, id);
+    console.log(artistTracks);
+    return res.status(200).json(artistTracks);
   } catch (error) {
     return res.status(500).json(error);
   }
