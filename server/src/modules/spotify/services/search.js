@@ -4,6 +4,11 @@ import config from '../../../configs/spotify';
 
 const { apiUrl } = config;
 
+export default {
+  search,
+  get
+};
+
 //TODO: Clean up search
 function search(action, params) {
   let { artist, track } = params;
@@ -37,8 +42,3 @@ function get(url, params) {
   })
   .then(res => res.data);
 }
-
-export default {
-  search,
-  get
-};

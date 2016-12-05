@@ -1,5 +1,5 @@
 import express from 'express';
-import { trackSearch } from '../services/tracks';
+import tracksService from '../services/tracks';
 
 const router = express.Router();
 
@@ -9,7 +9,7 @@ router.get('/tracks', searchTracks);
 async function searchTracks(req, res) {
   const { artist, track } = req.query;
 
-  const tracks = await trackSearch(track, artist);
+  const tracks = await tracksService.search(track, artist);
 
   res.status(200).json(artist ? tracks.track : tracks);
 }
