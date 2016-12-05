@@ -1,16 +1,28 @@
 import redis from '../../../shared/redis';
 import stringsMatch from '../../../shared/stringsMatch';
-import spotifySearch from './search';
+import spotify from './search';
 import artistsService from '../services/artists';
 
 export default {
-  search,
-  searchByArtist
+  get,
+  getAll,
+  getByArtist
 };
 
-async function search(track, artist) {
+async function get(track, artist, ignoreCache) {
   try {
-    const { tracks } = await spotifySearch.search('tracks', { track, artist });
+    let mappedTrack = {};
+
+    if (!ignoreCache) {
+      let { tracks: artistTracks } = await artistsService.search(artist);
+
+      if (artistTracks && artistTracks[track]) {
+        mappedTrack[track] = artistTracks[track];
+        return Promise.resolve(mappedTrack);
+      }
+    }
+
+    const { tracks } = await spotify.search('tracks', { track, artist });
 
     let matchedTrack = tracks.items.find(item => {
       const { name, artists } = item;
@@ -19,16 +31,31 @@ async function search(track, artist) {
       return isMatch && artist ? hasArtist(artist, artists) : isMatch;
     });
 
-    return Promise.resolve({
-      track: matchedTrack,
-      results: tracks.items
+    mappedTrack[track] = matchedTrack.id;
+    return Promise.resolve(mappedTrack);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+}
+
+async function getAll(tracks, artistName) {
+  try {
+    const requests = tracks.map(track => get(track, artistName));
+
+    //TODO: Clean up
+    return Promise.all(requests).then(tracks => {
+      return tracks.reduce((tracks, track) => {
+        let keys = Object.keys(track);
+        tracks[keys[0]] = track[keys];
+        return tracks;
+      }, {});
     });
   } catch (error) {
     return Promise.reject(error);
   }
 }
 
-async function searchByArtist(artistName, id) {
+async function getByArtist(artistName, id) {
   try {
     let artist;
 
@@ -63,7 +90,7 @@ async function searchByArtist(artistName, id) {
 }
 
 function getArtistTracksById(id) {
-  return spotifySearch.get(`/artists/${id}/top-tracks`, { country: 'US' });
+  return spotify.get(`/artists/${id}/top-tracks`, { country: 'US' });
 }
 
 function hasArtist(artistName, artists) {

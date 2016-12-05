@@ -9,8 +9,16 @@ export default {
 
 async function search(artistName) {
   try {
+    let artist;
+
+    artist = await redis.get(artistName);
+
+    if (artist) {
+      return Promise.resolve(artist);
+    }
+
     let { artists } = await spotify.search('artist', { artist: artistName });
-    let artist = artists.items.find(artist => {
+    artist = artists.items.find(artist => {
       return stringsMatch(artist.name, artistName);
     });
 
@@ -18,7 +26,7 @@ async function search(artistName) {
       const { id } = artist;
 
       redis.set(artistName, { id });
-      return artistById(id);
+      return searchById(id);
     }
 
     return Promise.reject({ status: 404 });

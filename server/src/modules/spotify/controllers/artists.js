@@ -36,7 +36,7 @@ async function getArtistTracks(req, res) {
   }
 
   try {
-    const artistTracks = await tracksService.searchByArtist(query, id);
+    const artistTracks = await tracksService.getByArtist(query, id);
 
     return res.status(200).json(artistTracks);
   } catch (error) {

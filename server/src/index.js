@@ -10,7 +10,8 @@ import moduleRoutes from './modules/module.routes';
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 /* Register Routes */
 moduleRoutes.forEach(ctrl => {

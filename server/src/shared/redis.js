@@ -22,14 +22,4 @@ function set(key, value) {
   }
 }
 
-function update(key, newValue, currentValue = {}) {
-  key = key.toLowerCase();
-  data = Object.assign(currentValue, newValue);
-
-  if (data) {
-    data = JSON.stringify(data);
-    return redis.set(key, data);
-  }
-}
-
 export default { get, set }

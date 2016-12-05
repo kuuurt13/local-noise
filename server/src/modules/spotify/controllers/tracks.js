@@ -9,7 +9,7 @@ router.get('/tracks', searchTracks);
 async function searchTracks(req, res) {
   const { artist, track } = req.query;
 
-  const tracks = await tracksService.search(track, artist);
+  const tracks = await tracksService.get(track, artist);
 
   res.status(200).json(artist ? tracks.track : tracks);
 }
