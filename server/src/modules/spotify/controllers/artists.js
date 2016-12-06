@@ -17,9 +17,9 @@ async function searchCachedArtists(req, res, next) {
   const artist = await redis.get(query);
 
   if (artist) {
-    const { id, tracks } = artist;
+    const { _id, tracks } = artist;
 
-    req.id = id;
+    req.id = _id;
     req.tracks = tracks;
   }
 

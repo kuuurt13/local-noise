@@ -13,7 +13,8 @@ async function search(artistName) {
 
     artist = await redis.get(artistName);
 
-    if (artist) {
+    if (artist && artist._id) {
+      console.log('CACHED: Artist => ', artistName);
       return Promise.resolve(artist);
     }
 
@@ -25,7 +26,7 @@ async function search(artistName) {
     if (artist) {
       const { id } = artist;
 
-      redis.set(artistName, { id });
+      redis.set(artistName, { _id: id });
       return searchById(id);
     }
 

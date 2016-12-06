@@ -4,22 +4,24 @@ import redisConfig from '../configs/redis';
 
 const redis = new Redis(redisConfig.port, redisConfig.ip);
 
-async function get(key) {
-  key = key.toLowerCase();
+async function get(key, prop) {
+  return new Promise((resolve, reject) => {
+    key = key.toLowerCase();
 
-  let payload = await redis.get(key);
-  payload = payload ? JSON.parse(payload) : null;
-
-  return Promise.resolve(payload);
+    redis.hgetall(key, (err, res) => {
+      resolve(prop ? res[prop] : res);
+    });
+  });
 }
 
 function set(key, value) {
   key = key.toLowerCase();
 
   if (value) {
-    value = typeof(value) === 'object' ? JSON.stringify(value) : value;
-    return redis.set(key, value);
+    return redis.hmset(key, value);
   }
+
+  return false;
 }
 
 export default { get, set }

@@ -6,19 +6,18 @@ import artistsService from '../services/artists';
 export default {
   get,
   getAll,
-  getByArtist
+  getByArtist,
+  mapTrack
 };
 
 async function get(track, artist, ignoreCache) {
   try {
-    let mappedTrack = {};
-
     if (!ignoreCache) {
-      let { tracks: artistTracks } = await artistsService.search(artist);
+      let cachedArtist = await artistsService.search(artist);
 
-      if (artistTracks && artistTracks[track]) {
-        mappedTrack[track] = artistTracks[track];
-        return Promise.resolve(mappedTrack);
+      if (cachedArtist && cachedArtist[track]) {
+        console.log('CACHED: Track => ', track);
+        return Promise.resolve(mapTrack(track, cachedArtist[track]));
       }
     }
 
@@ -31,8 +30,9 @@ async function get(track, artist, ignoreCache) {
       return isMatch && artist ? hasArtist(artist, artists) : isMatch;
     });
 
-    mappedTrack[track] = matchedTrack.id;
-    return Promise.resolve(mappedTrack);
+    redis.set(artist, mapTrack(track, matchedTrack.id));
+
+    return Promise.resolve(mapTrack(track, matchedTrack.id));
   } catch (error) {
     return Promise.reject(error);
   }
@@ -42,14 +42,15 @@ async function getAll(tracks, artistName) {
   try {
     const requests = tracks.map(track => get(track, artistName));
 
-    //TODO: Clean up
-    return Promise.all(requests).then(tracks => {
-      return tracks.reduce((tracks, track) => {
-        let keys = Object.keys(track);
-        tracks[keys[0]] = track[keys];
-        return tracks;
-      }, {});
-    });
+    let resps = await Promise.all(requests);
+
+    console.log(resps);
+
+    resps = resps.reduce((tracks, track) => {
+      return Object.assign(tracks, track);
+    }, {});
+
+    return Promise.resolve(resps);
   } catch (error) {
     return Promise.reject(error);
   }
@@ -71,7 +72,7 @@ async function getByArtist(artistName, id) {
       return Promise.resolve(artist.tracks);
     }
 
-    const { tracks } = await getArtistTracksById(id || artist.id);
+    const { tracks } = await getArtistTracksById(id || artist._id);
 
     const mappedTracks = tracks.reduce((tracks, track) => {
       tracks[track.name] = track.id;
@@ -79,7 +80,7 @@ async function getByArtist(artistName, id) {
     }, {});
 
     redis.set(artistName, {
-      id: id || artist.id,
+      _id: id || artist._id,
       tracks: mappedTracks
     });
 
@@ -87,6 +88,12 @@ async function getByArtist(artistName, id) {
   } catch (error) {
     return Promise.reject(error);
   }
+}
+
+function mapTrack(name, id) {
+  let track = {};
+  track[name] = id;
+  return track;
 }
 
 function getArtistTracksById(id) {
