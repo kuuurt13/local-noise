@@ -7,7 +7,7 @@
     "start": "npm run build && node dist/index.js",
     "dev": "nodemon --exec babel-node src/index.js",
     "build": "babel src --out-dir dist",
-    "debug": "npm run build && node --debug dist/index.js",
+    "debug": "babel src --out-dir dist -s",
     "redis-start": "redis-server /etc/redis/redis.conf &",
     "redis-stop": "redis-cli shutdown &",
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -1,4 +1,6 @@
 {
   "presets": ["latest"],
-  "plugins": ["transform-async-to-generator"]
+  "plugins": ["transform-async-to-generator"],
+  "sourceMaps": true,
+  "retainLines": true
 }
