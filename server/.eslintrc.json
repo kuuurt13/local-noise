@@ -1,0 +1,19 @@
+{
+  "extends": "standard",
+  "plugins": [
+    "standard",
+    "promise"
+  ],
+  "rules": {
+    "handle-callback-err": 0,
+    "semi": 0,
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "always",
+        "named": "ignore",
+        "asyncArrow": "ignore"
+      }
+    ]
+  }
+}

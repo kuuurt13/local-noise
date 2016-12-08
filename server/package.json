@@ -27,6 +27,12 @@
     "babel-plugin-transform-async-to-generator": "^6.16.0",
     "babel-polyfill": "^6.16.0",
     "babel-preset-latest": "^6.16.0",
+    "eslint": "^3.11.1",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.1",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.1",
     "nodemon": "^1.11.0"
   }
 }
