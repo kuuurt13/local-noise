@@ -39,4 +39,3 @@ async function search(artistName) {
 function searchById(id) {
   return spotify.get(`/artists/${id}`);
 }
-

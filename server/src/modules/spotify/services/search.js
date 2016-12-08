@@ -1,5 +1,4 @@
 import axios from 'axios';
-import redis from '../../../shared/redis';
 import config from '../../../configs/spotify';
 
 const { apiUrl } = config;
@@ -9,7 +8,7 @@ export default {
   get
 };
 
-//TODO: Clean up search
+// TODO: Clean up search
 function search(action, params) {
   let { artist, track } = params;
 
@@ -29,7 +28,7 @@ function searchArtists(q) {
 
 function searchTracks(track, artist) {
   const q = artist ? `artist:${artist} ${track}` : track;
-  const params = { q , type: 'track' };
+  const params = { q, type: 'track' };
 
   return get('/search', params);
 }

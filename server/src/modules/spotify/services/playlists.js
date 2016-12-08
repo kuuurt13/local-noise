@@ -1,5 +1,3 @@
-import redis from '../../../shared/redis';
-import stringsMatch from '../../../shared/stringsMatch';
 import tracksService from './tracks';
 
 export default {

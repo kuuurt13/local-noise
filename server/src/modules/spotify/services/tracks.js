@@ -64,7 +64,7 @@ async function getByArtist(artistName, id) {
       artist = await redis.get(artistName);
 
       if (!artist) {
-        artist = await artistService.search(artistName);
+        artist = await artistsService.search(artistName);
       }
     }
 

@@ -49,7 +49,7 @@ async function getArtist(req, res) {
   const { id } = req;
 
   try {
-    let artist = id ? await artistById(id) : await artistsService.search(query);
+    let artist = id ? await artistsService.artistById(id) : await artistsService.search(query);
     return res.status(200).json(artist);
   } catch (error) {
     return res.status(404).json(error);
