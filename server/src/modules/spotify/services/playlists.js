@@ -8,10 +8,12 @@ async function create(artist, tracks) {
   try {
     let artistTracks;
 
-    if (artist && tracks) {
+    if (tracks) {
       artistTracks = await tracksService.getAll(tracks, artist);
     } else if (artist) {
       artistTracks = await tracksService.getByArtist(artist);
+    } else {
+      throw Error({ status: 400, message: 'Requires artist and/or tracks' })
     }
 
     return Promise.resolve(artistTracks);

@@ -19,6 +19,7 @@ async function search(artistName) {
     }
 
     let { artists } = await spotify.search('artist', { artist: artistName });
+
     artist = artists.items.find(artist => {
       return stringsMatch(artist.name, artistName);
     });

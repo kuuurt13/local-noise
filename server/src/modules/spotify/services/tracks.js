@@ -40,11 +40,11 @@ async function get(track, artist, ignoreCache) {
 
 async function getAll(tracks, artistName) {
   try {
-    const requests = tracks.map(track => get(track, artistName));
+    const requests = tracks.map(track => {
+      return get(track.name || track, track.artist || artistName);
+    });
 
     let resps = await Promise.all(requests);
-
-    console.log(resps);
 
     resps = resps.reduce((tracks, track) => {
       return Object.assign(tracks, track);
@@ -63,24 +63,31 @@ async function getByArtist(artistName, id) {
     if (!id) {
       artist = await redis.get(artistName);
 
-      if (!artist) {
+      if (!artist._id) {
         artist = await artistsService.search(artistName);
       }
     }
 
-    if (artist.tracks) {
-      return Promise.resolve(artist.tracks);
+    const { id = artist._id, tracks } = artist || {};
+
+    if (!id && !tracks) {
+      throw Error({ status: 404, message: 'Artist not found' });
     }
 
-    const { tracks } = await getArtistTracksById(id || artist._id);
 
-    const mappedTracks = tracks.reduce((tracks, track) => {
+    if (tracks) {
+      return Promise.resolve(tracks);
+    }
+
+    const { tracks: artistTracks } = await getTracksByArtistId(id);
+
+    const mappedTracks = artistTracks.reduce((tracks, track) => {
       tracks[track.name] = track.id;
       return tracks;
     }, {});
 
     redis.set(artistName, {
-      _id: id || artist._id,
+      _id: id,
       tracks: mappedTracks
     });
 
@@ -96,7 +103,7 @@ function mapTrack(name, id) {
   return track;
 }
 
-function getArtistTracksById(id) {
+function getTracksByArtistId(id) {
   return spotify.get(`/artists/${id}/top-tracks`, { country: 'US' });
 }
 

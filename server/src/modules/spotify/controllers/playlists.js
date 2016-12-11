@@ -8,9 +8,13 @@ router.post('/playlists/create', createPlaylist);
 async function createPlaylist(req, res) {
   const { artist, tracks } = req.body;
 
-  const artistTracks = await spotifyPlaylist.create(artist, tracks);
+  try {
+    const artistTracks = await spotifyPlaylist.create(artist, tracks);
 
-  res.status(200).json(artistTracks);
+    res.status(200).json(artistTracks);
+  } catch (err) {
+    res.status(err.status || 500).json(err);
+  }
 }
 
 export default router;
