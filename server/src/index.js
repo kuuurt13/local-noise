@@ -22,6 +22,6 @@ moduleRoutes.forEach(ctrl => {
   });
 });
 
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
+app.listen(appConfig.port, function () {
+  console.log(`App listening on port ${appConfig.port}`);
 });
