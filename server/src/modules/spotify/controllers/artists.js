@@ -1,5 +1,5 @@
 import express from 'express';
-import redis from '../../../shared/redis';
+import spotifyCache from '../services/cache';
 import artistsService from '../services/artists';
 import tracksService from '../services/tracks';
 
@@ -14,12 +14,12 @@ router.get('/artists', getArtist);
 /* Middleware */
 async function searchCachedArtists(req, res, next) {
   const { query } = req.query;
-  const artist = await redis.get(query);
+  const artist = await spotifyCache.get(query);
 
   if (artist) {
-    const { _id, tracks } = artist;
+    const { id, tracks } = artist;
 
-    req.id = _id;
+    req.id = id;
     req.tracks = tracks;
   }
 

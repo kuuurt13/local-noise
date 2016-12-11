@@ -34,6 +34,8 @@ function searchTracks(track, artist) {
 }
 
 function get(url, params) {
+  console.log('REQUEST: Spotify =>', 'GET', url, params || 'N/A');
+
   return axios({
     method: 'get',
     url: `${apiUrl}${url}`,

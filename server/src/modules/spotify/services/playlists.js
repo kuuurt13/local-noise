@@ -10,13 +10,15 @@ async function create(artist, tracks) {
 
     if (tracks) {
       artistTracks = await tracksService.getAll(tracks, artist);
+      return artistTracks;
     } else if (artist) {
       artistTracks = await tracksService.getByArtist(artist);
-    } else {
-      throw Error({ status: 400, message: 'Requires artist and/or tracks' })
+      return artistTracks;
     }
 
-    return Promise.resolve(artistTracks);
+    // TODO: Add playlist create
+
+    throw Error({ status: 400, message: 'Requires artist and/or tracks' });
   } catch (error) {
     return Promise.reject(error);
   }

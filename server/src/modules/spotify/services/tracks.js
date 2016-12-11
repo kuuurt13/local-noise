@@ -1,7 +1,8 @@
-import redis from '../../../shared/redis';
 import stringsMatch from '../../../shared/stringsMatch';
-import spotify from './search';
+import spotifyCache from '../services/cache';
 import artistsService from '../services/artists';
+import spotify from './search';
+
 
 export default {
   get,
@@ -13,11 +14,11 @@ export default {
 async function get(track, artist, ignoreCache) {
   try {
     if (!ignoreCache) {
-      let cachedArtist = await artistsService.search(artist);
+      let { tracks } = await artistsService.search(artist);
 
-      if (cachedArtist && cachedArtist[track]) {
-        console.log('CACHED: Track => ', track);
-        return Promise.resolve(mapTrack(track, cachedArtist[track]));
+      if (tracks && tracks[track]) {
+        console.log('CACHED: Spotify => Track:', track);
+        return Promise.resolve(mapTrack(track, tracks[track]));
       }
     }
 
@@ -30,7 +31,7 @@ async function get(track, artist, ignoreCache) {
       return isMatch && artist ? hasArtist(artist, artists) : isMatch;
     });
 
-    redis.set(artist, mapTrack(track, matchedTrack.id));
+    spotifyCache.set(artist, mapTrack(track, matchedTrack.id));
 
     return Promise.resolve(mapTrack(track, matchedTrack.id));
   } catch (error) {
@@ -61,22 +62,22 @@ async function getByArtist(artistName, id) {
     let artist;
 
     if (!id) {
-      artist = await redis.get(artistName);
+      artist = await spotifyCache.get(artistName);
 
-      if (!artist._id) {
+      if (!artist.id) {
         artist = await artistsService.search(artistName);
       }
     }
 
-    const { id = artist._id, tracks } = artist || {};
+    const { id = artist.id, tracks } = artist || {};
 
     if (!id && !tracks) {
       throw Error({ status: 404, message: 'Artist not found' });
     }
 
-
     if (tracks) {
-      return Promise.resolve(tracks);
+      console.log('CACHED: Spotify => Artist Tracks:', artistName);
+      return tracks;
     }
 
     const { tracks: artistTracks } = await getTracksByArtistId(id);
@@ -86,9 +87,9 @@ async function getByArtist(artistName, id) {
       return tracks;
     }, {});
 
-    redis.set(artistName, {
-      _id: id,
-      tracks: mappedTracks
+    spotifyCache.set(artistName, {
+      id,
+      ...mappedTracks
     });
 
     return Promise.resolve(mappedTracks);

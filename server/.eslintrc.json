@@ -4,6 +4,13 @@
     "standard",
     "promise"
   ],
+  "parserOptions": {
+    "ecmaVersion": 8,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
   "rules": {
     "handle-callback-err": 0,
     "semi": 0,

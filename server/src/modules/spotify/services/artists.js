@@ -1,5 +1,5 @@
-import redis from '../../../shared/redis';
 import stringsMatch from '../../../shared/stringsMatch';
+import spotifyCache from './cache';
 import spotify from './search';
 
 export default {
@@ -11,10 +11,10 @@ async function search(artistName) {
   try {
     let artist;
 
-    artist = await redis.get(artistName);
+    artist = await spotifyCache.get(artistName);
 
-    if (artist && artist._id) {
-      console.log('CACHED: Artist => ', artistName);
+    if (artist && artist.id) {
+      console.log('CACHED: Spotify => Artist:', artistName);
       return Promise.resolve(artist);
     }
 
@@ -27,7 +27,7 @@ async function search(artistName) {
     if (artist) {
       const { id } = artist;
 
-      redis.set(artistName, { _id: id });
+      spotifyCache.set(artistName, { id });
       return searchById(id);
     }
 
