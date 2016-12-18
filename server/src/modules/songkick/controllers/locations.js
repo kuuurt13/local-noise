@@ -1,5 +1,5 @@
 import express from 'express';
-import songkickLocations from '../services/locations'
+import songkickLocations from '../services/locations';
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ async function getLocations(req, res) {
     let locations = await songkickLocations.search(query, location);
     res.status(200).json(locations);
   } catch (err) {
-    res.status(err.status || 500).send(err.message)
+    res.status(err.status || 500).send(err.message);
   }
 }
 

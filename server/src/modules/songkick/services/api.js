@@ -5,7 +5,8 @@ const { apiUrl, apiKey } = config;
 const defaultParams = { apikey: apiKey };
 
 export default {
-  get
+  get,
+  mapResp
 };
 
 function get(url, params) {
@@ -17,4 +18,10 @@ function get(url, params) {
     params: { ...params, ...defaultParams }
   })
   .then(res => res.data.resultsPage);
+}
+
+function mapResp(data, key) {
+  delete data.status;
+  data.results = data.results[key];
+  return data;
 }

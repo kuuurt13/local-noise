@@ -2,16 +2,20 @@ import songkickApi from './api';
 
 export default {
   search
-}
+};
 
 async function search(query, location) {
+  let locations;
+
   if (!query && !location) {
-    throw Error({ status: 400, message: 'Need query or location (lat,lng)' })
+    throw Error({ status: 400, message: 'Need query or location (lat,lng)' });
   }
 
   if (query) {
-    return await songkickApi.get('search/locations', { query });
+    locations = await songkickApi.get('search/locations', { query });
   } else if (location) {
-    return await songkickApi.get('search/locations', { location: `geo:${location}` });
+    locations = await songkickApi.get('search/locations', { location: `geo:${location}` });
   }
+
+  return songkickApi.mapResp(locations, 'location');
 }
