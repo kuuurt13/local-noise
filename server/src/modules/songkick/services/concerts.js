@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { chunkDates } from '../../../shared/dates';
 import songkickApi from './api';
 
@@ -16,8 +17,8 @@ async function search(location, date, page) {
   const reqs = concertDates.map(date => {
     return songkickApi.get('events', {
       location: `sk:${location}`,
-      min_date: Date.parse(date.start).toString('yyyy-MM-dd'),
-      max_date: Date.parse(date.end).toString('yyyy-MM-dd')
+      min_date: format(new Date(date.start), 'YYYY-MM-DD'),
+      max_date: format(new Date(date.end), 'YYYY-MM-DD')
     });
   });
 

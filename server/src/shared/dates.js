@@ -1,3 +1,12 @@
+import {
+  addDays,
+  addWeeks,
+  format,
+  differenceInSeconds,
+  endOfDay
+} from 'date-fns';
+
+
 export function chunkDates(date, size) {
   let dates = [];
 
@@ -5,16 +14,20 @@ export function chunkDates(date, size) {
     let start;
 
     if (i === 0) {
-      start = Date.parse(date);
+      start = new Date(date);
     } else {
-      start = Date.parse(dates[i - 1].end).addDays(1);
+      start = addDays(new Date(dates[i - 1].end), 1);
     }
 
     dates.push({
-      start: start.toString('M/d/yyyy'),
-      end: start.addWeeks(1).toString('M/d/yyyy')
+      start: format(start, 'M/D/YYYY'),
+      end: format(addWeeks(start, 1), 'M/D/YYYY')
     });
   }
 
   return dates;
+}
+
+export function secondsTillEndOfDay() {
+  return differenceInSeconds(endOfDay(new Date()), new Date());
 }

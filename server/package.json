@@ -19,7 +19,7 @@
   "dependencies": {
     "axios": "^0.15.2",
     "body-parser": "^1.15.2",
-    "datejs": "^1.0.0-rc3",
+    "date-fns": "^1.21.1",
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "ioredis": "^2.4.0",
