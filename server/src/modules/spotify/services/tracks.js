@@ -17,7 +17,7 @@ async function get(track, artist, ignoreCache) {
       let { tracks } = await artistsService.search(artist);
 
       if (tracks && tracks[track]) {
-        console.log('CACHED: Spotify => Track:', track);
+        console.log('CACHE: Spotify > Track:', track);
         return Promise.resolve(mapTrack(track, tracks[track]));
       }
     }
@@ -76,7 +76,7 @@ async function getByArtist(artistName, id) {
     }
 
     if (tracks) {
-      console.log('CACHED: Spotify => Artist Tracks:', artistName);
+      console.log('CACHE: Spotify > Artist Tracks:', artistName);
       return tracks;
     }
 

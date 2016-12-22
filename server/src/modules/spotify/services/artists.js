@@ -14,7 +14,7 @@ async function search(artistName) {
     artist = await spotifyCache.get(artistName);
 
     if (artist && artist.id) {
-      console.log('CACHED: Spotify => Artist:', artistName);
+      console.log('CACHE: Spotify > Artist:', artistName);
       return Promise.resolve(artist);
     }
 

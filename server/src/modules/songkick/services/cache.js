@@ -26,5 +26,5 @@ async function set(params, value) {
 }
 
 function generateKey({ location, date, page = 1 }) {
-  return [redisKey, location, date, page].join(':');
+  return [redisKey, location, date.start, date.end, page].join(':');
 }

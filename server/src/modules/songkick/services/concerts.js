@@ -13,34 +13,32 @@ async function search(location, date, page) {
     throw Error({ status: 400, message: 'Need location code/date' });
   }
 
-  let params = { location, date, page };
-
-  let results = await skCache.get(params);
-
-  if (results) {
-    console.log('CACHED: SongKick => Concerts: ', params);
-    return results;
-  }
-
   const dates = chunkDates(date, 4);
 
-  const resps = await Promise.all(
-    dates.map(date => getConcert(location, date))
+  return await Promise.all(
+    dates.map(date => getConcert({ location, date, page }))
   );
-
-  results = resps.map((date, i) => resps[i]);
-
-  skCache.set(params, results);
-  return results;
 }
 
-async function getConcert(location, date) {
-  let resp = await skApi.get('events', {
+async function getConcert(params) {
+  let { location, date } = params;
+
+  let concerts = await skCache.get(params);
+
+  if (concerts) {
+    console.log('CACHE: SongKick > Concerts: ', params);
+    return concerts;
+  }
+
+  concerts = await skApi.get('events', {
     location: `sk:${location}`,
     min_date: format(new Date(date.start), 'YYYY-MM-DD'),
     max_date: format(new Date(date.end), 'YYYY-MM-DD'),
-    per_page: 1
+    per_page: 50
   });
 
-  return { ...date, concerts: skApi.mapResp(resp, 'event') };
+  concerts = { ...date, concerts: skApi.mapResp(concerts, 'event') };
+
+  skCache.set(params, concerts);
+  return concerts;
 }
