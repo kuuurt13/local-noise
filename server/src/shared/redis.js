@@ -2,26 +2,46 @@ import Redis from 'ioredis';
 
 import redisConfig from '../configs/redis';
 
-const redis = new Redis(redisConfig.port, redisConfig.ip);
+const client = new Redis(redisConfig.port, redisConfig.ip);
 
-async function get(key, prop) {
-  return new Promise((resolve, reject) => {
-    key = key.toLowerCase();
+export default {
+  get,
+  set,
+  hget,
+  hset
+};
 
-    redis.hgetall(key, (err, res) => {
-      resolve(prop ? res[prop] : res);
-    });
-  });
+async function get(key) {
+  key = key.toLowerCase();
+  return client.get(key);
 }
 
 function set(key, value) {
-  key = key.toLowerCase();
-
-  if (value) {
-    return redis.hmset(key, value);
+  if (key && value) {
+    key = key.toLowerCase();
+    return client.set(key, value);
   }
 
   return false;
 }
 
-export default { get, set }
+
+async function hget(key, prop) {
+  return new Promise((resolve, reject) => {
+    key = key.toLowerCase();
+
+    client.hgetall(key, (err, res) => {
+      resolve(prop ? res[prop] : res);
+    });
+  });
+}
+
+function hset(key, value) {
+  key = key.toLowerCase();
+
+  if (value) {
+    return client.hmset(key, value);
+  }
+
+  return false;
+}
