@@ -3,6 +3,7 @@ import tracks from './spotify/controllers/tracks';
 import playlists from './spotify/controllers/playlists';
 import locations from './songkick/controllers/locations';
 import concerts from './songkick/controllers/concerts';
+import skArtists from './songkick/controllers/artists';
 
 export default [
   {
@@ -17,7 +18,8 @@ export default [
     url: '/songkick',
     routes: [
       locations,
-      concerts
+      concerts,
+      skArtists
     ]
   }
 ];

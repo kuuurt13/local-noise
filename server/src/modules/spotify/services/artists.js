@@ -5,7 +5,7 @@ import spotify from './search';
 export default {
   search,
   searchById
-}
+};
 
 async function search(artistName) {
   try {
