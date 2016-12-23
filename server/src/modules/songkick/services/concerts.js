@@ -5,8 +5,17 @@ import skCache from './cache';
 
 
 export default {
+  get,
   search
 };
+
+async function get(location, date, page) {
+  if (!location || !date) {
+    throw Error({ status: 400, message: 'Need location & start/end date' });
+  }
+
+  return getConcert({ location, date, page });
+}
 
 async function search(location, date, page) {
   if (!location || !date) {
@@ -21,7 +30,7 @@ async function search(location, date, page) {
 }
 
 async function getConcert(params) {
-  let { location, date } = params;
+  let { location, date, page } = params;
 
   let concerts = await skCache.get(params);
 
@@ -34,7 +43,8 @@ async function getConcert(params) {
     location: `sk:${location}`,
     min_date: format(new Date(date.start), 'YYYY-MM-DD'),
     max_date: format(new Date(date.end), 'YYYY-MM-DD'),
-    per_page: 50
+    per_page: 50,
+    page
   });
 
   concerts = { ...date, concerts: skApi.mapResp(concerts, 'event') };
