@@ -16,10 +16,10 @@ async function get(key) {
   return client.get(key);
 }
 
-function set(key, value) {
+function set(key, value, ...params) {
   if (key && value) {
     key = key.toLowerCase();
-    return client.set(key, value);
+    return client.set(key, value, ...params);
   }
 
   return false;

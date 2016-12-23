@@ -1,5 +1,8 @@
 import redis from '../../../shared/redis';
-import { redisKey } from '../../../configs/songkick';
+import { secondsTillEndOfDay } from '../../../shared/dates';
+import skConfig from '../../../configs/songkick';
+
+const { redisKey } = skConfig;
 
 export default {
   get,
@@ -21,7 +24,7 @@ async function set(params, value) {
   let key = generateKey(params);
 
   if (key && value) {
-    redis.set(key, JSON.stringify(value));
+    redis.set(key, JSON.stringify(value), 'EX', secondsTillEndOfDay());
   }
 }
 
