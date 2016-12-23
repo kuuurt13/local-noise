@@ -10,7 +10,6 @@ async function getConcerts(req, res) {
   const { id, page, date } = req.query;
 
   try {
-    // TODO: Implement paging
     let concerts = await songkickConcerts.search(id, date, page || 1);
     res.status(200).json(concerts);
   } catch (err) {

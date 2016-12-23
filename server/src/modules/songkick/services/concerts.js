@@ -13,7 +13,7 @@ async function search(location, date, page) {
     throw Error({ status: 400, message: 'Need location code/date' });
   }
 
-  const dates = chunkDates(date, 4);
+  const dates = chunkDates(date, 4, page);
 
   return await Promise.all(
     dates.map(date => getConcert({ location, date, page }))
