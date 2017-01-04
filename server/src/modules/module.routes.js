@@ -4,6 +4,7 @@ import playlists from './spotify/controllers/playlists';
 import locations from './songkick/controllers/locations';
 import concerts from './songkick/controllers/concerts';
 import skArtists from './songkick/controllers/artists';
+import setlists from './setlistfm/controllers/setlists';
 
 export default [
   {
@@ -20,6 +21,12 @@ export default [
       locations,
       concerts,
       skArtists
+    ]
+  },
+  {
+    url: '/setlistfm',
+    routes: [
+      setlists
     ]
   }
 ];
