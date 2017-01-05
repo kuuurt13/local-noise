@@ -14,7 +14,9 @@ async function getSetlistById(req, res) {
       throw Error({ status: 400, message: 'Missing mid' });
     }
 
+    // Add caching
     const setlists = await setlistApi.get(mid);
+
     res.status(200).json(setlists);
   } catch (error) {
     res.status(error.status || 500).json(error.message);

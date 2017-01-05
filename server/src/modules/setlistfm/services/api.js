@@ -15,10 +15,27 @@ function get(mid, params) {
     url: `${apiUrl}artist/${mid}/setlists.json`
   })
   .then(res => res.data.setlists)
-  .then(mapResp);
+  .then(parseResp)
+  .then(findLatestSet);
 }
 
-function mapResp(data) {
+function parseResp(data) {
   data = JSON.stringify(data).replace(/@/g, '');
-  return JSON.parse(data);
+  return JSON.parse(data).setlist;
+}
+
+function findLatestSet(setlists) {
+  let setlist = setlists.find(setlist => setlist.sets.set);
+
+  if (setlist) {
+    let { set } = setlist.sets;
+
+    set = Object.keys(set).reduce((songs, type) => {
+      return songs.concat(set[type].song || set.song);
+    }, []);
+
+    return { ...setlist, fullSetlist: set };
+  }
+
+  return setlist;
 }
