@@ -18,7 +18,7 @@ async function get(track, artist, ignoreCache) {
 
       if (tracks && tracks[track]) {
         console.log('CACHE: Spotify > Track:', track);
-        return Promise.resolve(mapTrack(track, tracks[track]));
+        return mapTrack(track, tracks[track]);
       }
     }
 
@@ -33,9 +33,9 @@ async function get(track, artist, ignoreCache) {
 
     spotifyCache.set(artist, mapTrack(track, matchedTrack.id));
 
-    return Promise.resolve(mapTrack(track, matchedTrack.id));
+    return mapTrack(track, matchedTrack.id);
   } catch (error) {
-    return Promise.reject(error);
+    throw error;
   }
 }
 
@@ -51,9 +51,9 @@ async function getAll(tracks, artistName) {
       return Object.assign(tracks, track);
     }, {});
 
-    return Promise.resolve(resps);
+    return resps;
   } catch (error) {
-    return Promise.reject(error);
+    throw error;
   }
 }
 
@@ -72,7 +72,7 @@ async function getByArtist(artistName, id) {
     const { id = artist.id, tracks } = artist || {};
 
     if (!id && !tracks) {
-      throw Error({ status: 404, message: 'Artist not found' });
+      throw { status: 404, message: 'Artist not found' };
     }
 
     if (tracks) {
@@ -92,9 +92,9 @@ async function getByArtist(artistName, id) {
       ...mappedTracks
     });
 
-    return Promise.resolve(mappedTracks);
+    return mappedTracks;
   } catch (error) {
-    return Promise.reject(error);
+    throw error;
   }
 }
 
