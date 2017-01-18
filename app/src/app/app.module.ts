@@ -1,9 +1,11 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { TabsPage } from '../pages/tabs/tabs';
+import { Api } from '../providers/api'
 
 @NgModule({
   declarations: [
@@ -22,6 +24,10 @@ import { TabsPage } from '../pages/tabs/tabs';
     LoginPage,
     TabsPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [
+    Api,
+    Storage,
+    { provide: ErrorHandler, useClass: IonicErrorHandler }
+  ]
 })
 export class AppModule {}

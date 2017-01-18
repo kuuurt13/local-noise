@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-
 import { InAppBrowser, InAppBrowserEvent } from 'ionic-native';
+import { Storage } from '@ionic/storage';
+
+import { HomePage } from '../home/home'
+import { Api } from './../../providers/api';
+import { LoginCredentialsModel } from './login.model'
 
 
 @Component({
@@ -10,18 +14,41 @@ import { InAppBrowser, InAppBrowserEvent } from 'ionic-native';
 })
 export class LoginPage {
   private browser: InAppBrowser;
-  private debug: any;
+  private loginUrl: string = '/spotify/auth/login';
+  private loginCredentials = new LoginCredentialsModel();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public storage: Storage,
+    public Api: Api
+  ) {
+    this.loginUrl = Api.url + this.loginUrl;
+  }
 
   ionViewDidLoad() {
-    this.browser = new InAppBrowser('https://ionic.io', '_blank', 'location=no');
+    this.browser = new InAppBrowser(this.loginUrl, '_blank', 'location=no');
     this.browser.show();
-    this.browser.on('loadstart').subscribe((event: InAppBrowserEvent) => this.onLoadStart(event));
+    this.browser
+      .on('loadstart')
+      .subscribe((event: InAppBrowserEvent) => this.onLoadStart(event));
   }
 
   private onLoadStart(event: InAppBrowserEvent): void {
-    this.debug = event.url;
-    this.browser.close();
+    let { url } = event;
+
+    this.loginCredentials = this.loginCredentials.parse(url);
+
+    if (this.loginCredentials.isDefined()) {
+      this.saveCredentials(this.loginCredentials);
+      this.browser.close();
+      this.navCtrl.push(HomePage);
+    }
+  }
+
+  private saveCredentials({ token, refresh, id }: LoginCredentialsModel): void {
+    this.storage.set('token', token);
+    this.storage.set('refresh', refresh);
+    this.storage.set('id', id);
   }
 }
