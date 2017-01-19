@@ -14,7 +14,7 @@ async function createPlaylist(req, res) {
 
     res.status(200).json(playlist);
   } catch (err) {
-    res.status(err.status || 500).json(err.message);
+    res.status(err.status || 500).json(err);
   }
 }
 

@@ -1,12 +1,17 @@
 import axios from 'axios';
 import spotifyConfig from '../../../configs/spotify';
 import tracksService from './tracks';
+import authService from './auth';
 
 export default {
   create
 };
 
-async function create({ artist, tracks, name, userId, token, refresh }) {
+const { retryAttempts } = spotifyConfig;
+
+async function create(params) {
+  let { artist, tracks, name, userId, token, refresh, attempts = 1 } = params;
+
   try {
     let artistTracks;
 
@@ -23,9 +28,17 @@ async function create({ artist, tracks, name, userId, token, refresh }) {
     const { id } = await createPlaylist(name, userId, token);
     const playlist = await addTracksToPlaylist(id, userId, artistTracks, token);
 
-    return playlist;
-  } catch (error) {
-    throw error;
+    return { playlist, token, attempts };
+  } catch (err) {
+    if (err.status === 401 && attempts <= retryAttempts) {
+      let token = await authService.renewToken(refresh);
+      attempts++;
+
+      return create({ ...params, token, attempts });
+    } else {
+      console.log('err', err);
+      throw err;
+    }
   }
 }
 

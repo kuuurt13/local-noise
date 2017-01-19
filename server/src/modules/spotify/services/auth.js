@@ -10,12 +10,13 @@ const {
 } = spotifyConfig;
 
 export default {
-  getCredentials,
+  login,
   loginRedirect,
-  handleLoginRedirect
+  handleLoginRedirect,
+  renewToken
 };
 
-async function getCredentials(code) {
+async function login(code) {
   const { token, refresh } = await getTokens(code);
   const { id } = await getUser(token, refresh);
 
@@ -26,7 +27,7 @@ function loginRedirect() {
   return `${authUrl}?` +
     queryString({
       client_id: auth.id,
-      scope: auth.scopes,
+      scope: 'user-read-private playlist-modify-public',
       redirect_uri: auth.redirectUrl,
       response_type: 'code',
       show_dialog: true
@@ -37,6 +38,16 @@ function handleLoginRedirect({ token, refresh, id }) {
   return `${auth.redirectUrl}?${queryString({ token, refresh, id })}`;
 }
 
+async function renewToken(refresh) {
+  let { token } = await tokenRequest({
+    refresh_token: refresh,
+    grant_type: 'refresh_token'
+  });
+
+  return token;
+}
+
+/* Private */
 function getUser(token, refresh) {
   return axios({
     method: 'get',
@@ -45,31 +56,34 @@ function getUser(token, refresh) {
       'Authorization': getAuthHeader({ token })
     }
   })
-  .then(res => res.data);
+    .then(res => res.data);
 }
 
 function getTokens(code) {
+  return tokenRequest({
+    code,
+    redirect_uri: auth.redirectUrl,
+    grant_type: 'authorization_code'
+  });
+}
+
+async function tokenRequest(params) {
   const { id, secret } = auth;
 
-  return axios({
+  let { data } = await axios({
     method: 'post',
     url: tokenUrl,
-    params: {
-      code,
-      redirect_uri: auth.redirectUrl,
-      grant_type: auth.grantType
-    },
+    params,
     headers: {
       'Authorization': getAuthHeader({ id, secret })
     },
     json: true
-  })
-  .then(({ data }) => {
-    return {
-      token: data.access_token,
-      refresh: data.refresh_token
-    };
   });
+
+  return {
+    token: data.access_token,
+    refresh: data.refresh_token
+  };
 }
 
 function getAuthHeader({ token, id, secret }) {

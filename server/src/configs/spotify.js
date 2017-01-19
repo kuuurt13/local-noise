@@ -7,7 +7,7 @@ export default {
     id: '295dcdb3d10e48449baad39cbbd07fe8',
     secret: '55796b5c34264d3abe57045b665d70eb',
     redirectUrl: process.env.SPOTIFY_REDIRECT_URL,
-    scopes: 'user-read-private playlist-modify-public',
-    grantType: 'authorization_code'
-  }
+    scopes: 'user-read-private playlist-modify-public'
+  },
+  retryAttempts: 1
 };
