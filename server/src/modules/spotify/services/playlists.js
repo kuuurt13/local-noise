@@ -1,10 +1,11 @@
 import axios from 'axios';
 import spotifyConfig from '../../../configs/spotify';
-import tracksService from './tracks';
 import authService from './auth';
+import playlistQueue from '../jobs/playlist';
 
 export default {
-  create
+  create,
+  addTracks
 };
 
 const { retryAttempts } = spotifyConfig;
@@ -13,23 +14,17 @@ async function create(params) {
   let { artists, tracks, name, userId, token, refresh, attempts = 1 } = params;
 
   try {
-    let artistTracks;
-
     if (!tracks && !artists) {
       throw { status: 400, message: 'Requires artist/tracks' };
     }
 
-    if (tracks) {
-      artistTracks = await tracksService.getAllTracks(tracks);
-    } else if (artists) {
-      artistTracks = await tracksService.getByArtists(artists);
-    }
-
     const { id } = await createPlaylist(name, userId, token);
-    const playlist = await addTracksToPlaylist(id, userId, artistTracks, token);
 
-    return { playlist, token, attempts };
+    playlistQueue.addTracks({ id, artists, tracks, userId, token, refresh });
+
+    return { id, token, attempts };
   } catch (err) {
+    // TODO: Make a function
     if (err.status === 401 && attempts <= retryAttempts) {
       let token = await authService.renewToken(refresh);
       attempts++;
@@ -53,15 +48,29 @@ async function createPlaylist(name = 'Concert Playlist', userId, token) {
   }, token);
 }
 
-async function addTracksToPlaylist(id, userId, tracks, token) {
-  const uris = Object.keys(tracks).map(track => {
-    return `spotify:track:${tracks[track]}`;
-  }).join(',');
+async function addTracks(params) {
+  let { id, userId, tracks, token, refresh, attempts = 1 } = params;
 
-  return playlistRequest({
-    url: `${spotifyConfig.apiUrl}/users/${userId}/playlists/${id}/tracks`,
-    params: { uris }
-  }, token);
+  try {
+    const uris = Object.keys(tracks).map(track => {
+      return `spotify:track:${tracks[track]}`;
+    }).join(',');
+
+    return playlistRequest({
+      url: `${spotifyConfig.apiUrl}/users/${userId}/playlists/${id}/tracks`,
+      params: { uris }
+    }, token);
+  } catch (err) {
+    // TODO: Make a function
+    if (err.status === 401 && attempts <= retryAttempts) {
+      let token = await authService.renewToken(refresh);
+      attempts++;
+
+      return addTracks({ ...params, token, attempts });
+    } else {
+      throw err;
+    }
+  }
 }
 
 async function playlistRequest(params, token) {
