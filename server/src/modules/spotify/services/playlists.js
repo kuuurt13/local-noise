@@ -10,19 +10,19 @@ export default {
 const { retryAttempts } = spotifyConfig;
 
 async function create(params) {
-  let { artist, tracks, name, userId, token, refresh, attempts = 1 } = params;
+  let { artists, tracks, name, userId, token, refresh, attempts = 1 } = params;
 
   try {
     let artistTracks;
 
-    if (!tracks) {
-      throw { status: 400, message: 'Requires tracks' };
+    if (!tracks && !artists) {
+      throw { status: 400, message: 'Requires artist/tracks' };
     }
 
     if (tracks) {
-      artistTracks = await tracksService.getAll(tracks, artist);
-    } else if (artist) {
-      artistTracks = await tracksService.getByArtist(artist);
+      artistTracks = await tracksService.getAllTracks(tracks);
+    } else if (artists) {
+      artistTracks = await tracksService.getByArtists(artists);
     }
 
     const { id } = await createPlaylist(name, userId, token);
@@ -36,7 +36,6 @@ async function create(params) {
 
       return create({ ...params, token, attempts });
     } else {
-      console.log('err', err);
       throw err;
     }
   }

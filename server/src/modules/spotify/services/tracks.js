@@ -5,13 +5,14 @@ import spotify from './search';
 
 
 export default {
-  get,
-  getAll,
+  getTrack,
+  getAllTracks,
   getByArtist,
+  getByArtists,
   mapTrack
 };
 
-async function get(track, artist, ignoreCache) {
+async function getTrack(track, artist, ignoreCache) {
   try {
     if (!ignoreCache) {
       let { tracks } = await artistsService.search(artist);
@@ -39,10 +40,10 @@ async function get(track, artist, ignoreCache) {
   }
 }
 
-async function getAll(tracks, artistName) {
+async function getAllTracks(tracks, artistName) {
   try {
     const requests = tracks.map(track => {
-      return get(track.name || track, track.artist || artistName);
+      return getTrack(track.name || track, track.artist || artistName);
     });
 
     let resps = await Promise.all(requests);
@@ -96,6 +97,17 @@ async function getByArtist(artistName, id) {
   } catch (error) {
     throw error;
   }
+}
+
+async function getByArtists(artists) {
+  if (!artists) {
+    throw { error: 400, message: 'Requires artists' };
+  }
+
+  const tracks = await Promise.all(artists.map(artist => getByArtist(artist)));
+  return tracks.reduce((tracks, track) => {
+    return { ...track, ...tracks };
+  }, {});
 }
 
 function mapTrack(name, id) {
