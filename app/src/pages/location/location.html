@@ -1,0 +1,18 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Location</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list inset>
+    <button ion-item *ngFor="let location of locations" (click)="setLocation(location)">
+      {{ location?.displayName }}
+    </button>
+  </ion-list>
+
+</ion-content>
