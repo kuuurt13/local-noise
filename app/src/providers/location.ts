@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, URLSearchParams } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { Api } from './api';
 
@@ -15,7 +16,7 @@ export class Location {
     this.locationEndpoint = `${api.url}/songkick/locations`;
   }
 
-  public searchByCoordinates(lat: number, lng: number): any {
+  public searchByCoordinates(lat: number, lng: number): Observable<any> {
     let params: URLSearchParams = new URLSearchParams();
     params.set('location', `${lat},${lng}`);
 

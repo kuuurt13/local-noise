@@ -39,11 +39,11 @@ export class LocationPage {
     this.location
       .searchByCoordinates(latitude, longitude)
       .map(({ results }) => {
-        this.locations = results.reduce((locals, local) => {
-          if (!locals.find(loc => loc.id === local.id)) {
-            locals.push(new LocationModel(local));
+        this.locations = results.reduce((locales, locale) => {
+          if (!locales.find(loc => loc.id === locale.id)) {
+            locales.push(new LocationModel(locale));
           }
-          return locals;
+          return locales;
         }, []);
       })
       .subscribe();
