@@ -1,0 +1,34 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Concerts</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list inset>
+
+    <ion-card *ngFor="let concert of concerts">
+      <img src="https://ionicframework.com/dist/preview-app/www/assets/img/nin-live.png" />
+
+      <ion-card-content>
+        <ion-card-title>
+          {{ concert?.start }} - {{ concert?.end }}
+        </ion-card-title>
+        <p>Concerts: {{ concert.concerts.totalEntries}}</p>
+        <button ion-button full icon-right color="danger" small>
+          <div>View Concerts</div>
+        </button>
+      </ion-card-content>
+    </ion-card>
+
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="getConcerts($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

@@ -9,10 +9,12 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LocationPage } from '../pages/location/location';
+import { ConcertsPage } from '../pages/concerts/concerts';
 
 // Providers
 import { Api } from '../providers/api';
 import { Location } from '../providers/location';
+import { Concert } from '../providers/concert';
 
 
 @NgModule({
@@ -21,7 +23,8 @@ import { Location } from '../providers/location';
     HomePage,
     LoginPage,
     TabsPage,
-    LocationPage
+    LocationPage,
+    ConcertsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -32,11 +35,13 @@ import { Location } from '../providers/location';
     HomePage,
     LoginPage,
     TabsPage,
-    LocationPage
+    LocationPage,
+    ConcertsPage
   ],
   providers: [
-    Api,
+    Concert,
     Location,
+    Api,
     Storage,
     Geolocation,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
