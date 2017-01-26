@@ -7,18 +7,20 @@ import { Api } from './api';
 @Injectable()
 export class Concert {
   private concertEndpoint: string;
-  private concertSearchEndpoint: string;
-  private locationId: string;
+  private concertSearchDatesEndpoint: string;
+  private concertGetDatesEndpoint: string;
+
 
   constructor(
     public http: Http,
     public api: Api
   ) {
     this.concertEndpoint = `${api.url}/songkick/concerts`;
-    this.concertSearchEndpoint = `${api.url}/songkick/concerts/search`;
+    this.concertSearchDatesEndpoint = `${api.url}/songkick/concerts/search`;
+    this.concertGetDatesEndpoint = `${api.url}/songkick/concerts`;
   }
 
-  public search(location: string, page: number, date?: string,): Observable<any> {
+  public searchDates(location: string, page: number, date?: string): Observable<any> {
     const params: URLSearchParams = new URLSearchParams();
 
     params.set('location', location);
@@ -26,7 +28,22 @@ export class Concert {
     params.set('date', date || this.currentDate());
 
     return this.http
-      .get(this.concertSearchEndpoint, {
+      .get(this.concertSearchDatesEndpoint, {
+        search: params
+      })
+      .map(res => res.json());
+  }
+
+  public getForDateRange(location: string, start: string, end: string, page: number): Observable<any> {
+    const params: URLSearchParams = new URLSearchParams();
+
+    params.set('location', location);
+    params.set('page', page.toString() || '1');
+    params.set('start', start);
+    params.set('end', end);
+
+    return this.http
+      .get(this.concertGetDatesEndpoint, {
         search: params
       })
       .map(res => res.json());

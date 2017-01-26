@@ -9,6 +9,7 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LocationPage } from '../pages/location/location';
+import { ConcertDatesPage } from '../pages/concert-dates/concert-dates';
 import { ConcertsPage } from '../pages/concerts/concerts';
 
 // Providers
@@ -24,6 +25,7 @@ import { Concert } from '../providers/concert';
     LoginPage,
     TabsPage,
     LocationPage,
+    ConcertDatesPage,
     ConcertsPage
   ],
   imports: [
@@ -36,6 +38,7 @@ import { Concert } from '../providers/concert';
     LoginPage,
     TabsPage,
     LocationPage,
+    ConcertDatesPage,
     ConcertsPage
   ],
   providers: [

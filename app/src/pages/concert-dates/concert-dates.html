@@ -12,11 +12,16 @@
   <ion-list inset>
 
     <ion-card *ngFor="let concert of concerts">
+      <img src="https://ionicframework.com/dist/preview-app/www/assets/img/nin-live.png" />
+
       <ion-card-content>
         <ion-card-title>
-          {{ concert.displayName }}
+          {{ concert?.start }} - {{ concert?.end }}
         </ion-card-title>
-        <p>{{ concert.location.city }}</p>
+        <p>Concerts: {{ concert.concerts.totalEntries}}</p>
+        <button ion-button full icon-right color="danger" small (click)="goToConcerts(concert)">
+          <div>View Concerts</div>
+        </button>
       </ion-card-content>
     </ion-card>
 

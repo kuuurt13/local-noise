@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
 import { Concert } from '../../providers/concert';
 
 @Component({
@@ -8,6 +7,8 @@ import { Concert } from '../../providers/concert';
   templateUrl: 'concerts.html'
 })
 export class ConcertsPage {
+  private startDate: string;
+  private endDate: string;
   private page: number = 0;
   private location: string;
   private concerts: any[] = [];
@@ -15,27 +16,24 @@ export class ConcertsPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public storage: Storage,
     public concert: Concert
-  ) {}
+  ) {
+    this.location = navParams.get('location');
+    this.startDate = navParams.get('startDate');
+    this.endDate = navParams.get('endDate');
+  }
 
   ionViewDidLoad() {
-    this.storage
-      .get('locationId')
-      .then(location =>  {
-        this.location = location;
-        this.getConcerts();
-      });
-
+    this.getConcerts();
   }
 
   private getConcerts(infiniteScroll?: any) {
     this.page++;
 
     this.concert
-      .search(this.location, this.page)
-      .map(concerts => {
-        this.concerts = this.concerts.concat(concerts);
+      .getForDateRange(this.location, this.startDate, this.endDate, this.page)
+      .map(res => {
+        this.concerts = this.concerts.concat(res.concerts.results);
 
         if (infiniteScroll) {
           infiniteScroll.complete();
