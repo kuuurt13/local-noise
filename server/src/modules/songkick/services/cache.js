@@ -28,6 +28,6 @@ async function set(params, value) {
   }
 }
 
-function generateKey({ location, date, page = 1 }) {
-  return [redisKey, location, date.start, date.end, page].join(':');
+function generateKey({ location, date, page = 1, perPage = 50 }) {
+  return [redisKey, location, date.start, date.end, page, perPage].join(':');
 }
