@@ -5,4 +5,5 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class Api {
   public url: string = ENV.API_URL;
+  public artistsUrl: string = `${this.url}/songkick/artists`;
 }

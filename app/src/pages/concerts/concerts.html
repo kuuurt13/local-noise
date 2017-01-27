@@ -10,19 +10,22 @@
 <ion-content padding>
 
   <ion-list inset>
-
     <ion-card *ngFor="let concert of concerts">
       <ion-card-content>
-        <ion-card-title>
-          {{ concert.displayName }}
-        </ion-card-title>
-        <p>{{ concert.location.city }}</p>
+        <ion-row>
+          <ion-col width-33>
+            <artist-image [artist]="concert?.performance[0]?.artist"></artist-image>
+          </ion-col>
+          <ion-col>
+            <h2>{{ concert.displayName }}</h2>
+            <p>{{ concert.location.city }}</p>
+          </ion-col>
+        </ion-row>
       </ion-card-content>
     </ion-card>
-
   </ion-list>
 
-  <ion-infinite-scroll (ionInfinite)="getConcerts($event)">
+  <ion-infinite-scroll (ionInfinite)="getConcerts($event)" [threshold]="'25%'">
     <ion-infinite-scroll-content loadingSpinner="bubbles"></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 

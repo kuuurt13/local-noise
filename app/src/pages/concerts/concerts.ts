@@ -32,11 +32,14 @@ export class ConcertsPage {
 
     this.concert
       .getForDateRange(this.location, this.startDate, this.endDate, this.page)
-      .map(res => {
-        this.concerts = this.concerts.concat(res.concerts.results);
+      .map(({ concerts }) => {
+        const { results = [], totalEntries = 0 } = concerts;
+
+        this.concerts = this.concerts.concat(results);
 
         if (infiniteScroll) {
           infiniteScroll.complete();
+          infiniteScroll.enable(concerts.totalEntries < this.concerts.length);
         }
       })
       .subscribe();

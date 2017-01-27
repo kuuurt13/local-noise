@@ -12,6 +12,9 @@ import { LocationPage } from '../pages/location/location';
 import { ConcertDatesPage } from '../pages/concert-dates/concert-dates';
 import { ConcertsPage } from '../pages/concerts/concerts';
 
+// Components
+import { ArtistImageComponent } from '../components/artist-image/artist-image';
+
 // Providers
 import { Api } from '../providers/api';
 import { Location } from '../providers/location';
@@ -26,7 +29,8 @@ import { Concert } from '../providers/concert';
     TabsPage,
     LocationPage,
     ConcertDatesPage,
-    ConcertsPage
+    ConcertsPage,
+    ArtistImageComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
