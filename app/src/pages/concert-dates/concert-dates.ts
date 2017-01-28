@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { Concert } from '../../providers/concert';
+import { ConcertService } from '../../providers/concert.service';
 import { ConcertsPage } from '../concerts/concerts';
 
 @Component({
@@ -17,7 +17,7 @@ export class ConcertDatesPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public storage: Storage,
-    public concert: Concert
+    public concertService: ConcertService
   ) {}
 
   ionViewDidLoad() {
@@ -41,7 +41,7 @@ export class ConcertDatesPage {
   private getConcerts(infiniteScroll?: any) {
     this.page++;
 
-    this.concert
+    this.concertService
       .searchDates(this.location, this.page)
       .map(concerts => {
         this.concerts = this.concerts.concat(concerts);

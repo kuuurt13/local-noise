@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
-import { Location } from '../../providers/location';
+import { LocationService } from '../../providers/location.service';
 import { Storage } from '@ionic/storage';
 import { LocationModel } from './location.model';
 
@@ -15,7 +15,7 @@ export class LocationPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public location: Location,
+    public locationService: LocationService,
     public storage: Storage
   ) { }
 
@@ -36,7 +36,7 @@ export class LocationPage {
   }
 
   private searchByCoordinates(latitude, longitude): void {
-    this.location
+    this.locationService
       .searchByCoordinates(latitude, longitude)
       .map(({ results }) => {
         this.locations = results.reduce((locales, locale) => {

@@ -17,8 +17,8 @@ import { ArtistImageComponent } from '../components/artist-image/artist-image';
 
 // Providers
 import { Api } from '../providers/api';
-import { Location } from '../providers/location';
-import { Concert } from '../providers/concert';
+import { LocationService } from '../providers/location.service';
+import { ConcertService } from '../providers/concert.service';
 
 
 @NgModule({
@@ -46,8 +46,8 @@ import { Concert } from '../providers/concert';
     ConcertsPage
   ],
   providers: [
-    Concert,
-    Location,
+    ConcertService,
+    LocationService,
     Api,
     Storage,
     Geolocation,

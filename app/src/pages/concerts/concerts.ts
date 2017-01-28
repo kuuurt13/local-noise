@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Concert } from '../../providers/concert';
+import { ConcertService } from '../../providers/concert.service';
 
 @Component({
   selector: 'page-concerts',
@@ -16,7 +16,7 @@ export class ConcertsPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public concert: Concert
+    public concertService: ConcertService
   ) {
     this.location = navParams.get('location');
     this.startDate = navParams.get('startDate');
@@ -30,8 +30,8 @@ export class ConcertsPage {
   private getConcerts(infiniteScroll?: any) {
     this.page++;
 
-    this.concert
-      .getForDateRange(this.location, this.startDate, this.endDate, this.page)
+    this.concertService
+      .getDateRange(this.location, this.startDate, this.endDate, this.page)
       .map(({ concerts }) => {
         const { results = [], totalEntries = 0 } = concerts;
 

@@ -14,16 +14,16 @@ import { LoginCredentialsModel } from './login.model'
 })
 export class LoginPage {
   private browser: InAppBrowser;
-  private loginUrl: string = '/spotify/auth/login';
+  private loginUrl: string;
   private loginCredentials = new LoginCredentialsModel();
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public storage: Storage,
-    public Api: Api
+    public api: Api
   ) {
-    this.loginUrl = Api.url + this.loginUrl;
+    this.loginUrl = api.loginUrl;
   }
 
   ionViewDidLoad() {
@@ -31,7 +31,7 @@ export class LoginPage {
     this.browser.show();
     this.browser
       .on('loadstart')
-      .subscribe((event: InAppBrowserEvent) => this.onLoadStart(event));
+      .subscribe((event) => this.onLoadStart(event));
   }
 
   private onLoadStart(event: InAppBrowserEvent): void {
