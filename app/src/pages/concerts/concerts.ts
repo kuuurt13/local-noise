@@ -39,7 +39,7 @@ export class ConcertsPage {
 
         if (infiniteScroll) {
           infiniteScroll.complete();
-          infiniteScroll.enable(concerts.totalEntries < this.concerts.length);
+          infiniteScroll.enable(totalEntries < this.concerts.length);
         }
       })
       .subscribe();
