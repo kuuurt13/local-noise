@@ -3,7 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
 import { LocationService } from '../../providers/location.service';
 import { Storage } from '@ionic/storage';
-import { LocationModel } from './location.model';
+import { LocationModel } from '../../models/location.model';
 
 @Component({
   selector: 'page-location',

@@ -1,4 +1,5 @@
-export class LoginCredentialsModel {
+export class CredentialsModel {
+  static keys: string[] = ['token', 'refresh', 'id'];
   public token: string;
   public refresh: string;
   public id: string;
@@ -9,11 +10,19 @@ export class LoginCredentialsModel {
     this.id = creds.id;
   }
 
+  public get(): any {
+    return {
+       token: this.token,
+       refresh: this.refresh,
+       id: this.id
+    };
+  }
+
   public isDefined(): boolean {
     return !!(this.token && this.refresh && this.id);
   }
 
-  public parse(url: string): LoginCredentialsModel {
+  public parse(url: string): CredentialsModel {
     let params: string | string[];
     let splitUrl: string[];
     let loginCredentials: any = {};
@@ -28,6 +37,6 @@ export class LoginCredentialsModel {
       }, {});
     }
 
-    return new LoginCredentialsModel(loginCredentials);
+    return new CredentialsModel(loginCredentials);
   }
 }

@@ -8,7 +8,9 @@
 
 
 <ion-content padding>
-
+  <button ion-button full icon-right color="danger" small (click)="exportConcerts(concerts)">
+    <div>Export Concerts</div>
+  </button>
   <ion-list inset>
     <ion-card *ngFor="let concert of concerts">
       <ion-card-content>

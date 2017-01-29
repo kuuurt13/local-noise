@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Api } from './api';
+import { CredentialsModel } from '../models/credentials.model';
 
 @Injectable()
 export class ConcertService extends Api {
@@ -32,6 +33,13 @@ export class ConcertService extends Api {
     };
 
     return this.get(url, params);
+  }
+
+  public createPlaylistArtists(artists: string[], name: string, credentials: CredentialsModel): Observable<any> {
+    const url = `${this.createPlaylistUrl}/${credentials.id}`;
+    const data = Object.assign({ artists, name }, credentials.get());
+
+    return super.post(url, data);
   }
 
   private currentDate(): string {

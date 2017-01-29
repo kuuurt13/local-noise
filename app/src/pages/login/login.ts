@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { InAppBrowser, InAppBrowserEvent } from 'ionic-native';
-import { Storage } from '@ionic/storage';
-
 import { HomePage } from '../home/home'
 import { Api } from './../../providers/api';
-import { LoginCredentialsModel } from './login.model'
+import { CredentialsService } from '../../providers/credentials.service';
+import { CredentialsModel } from '../../models/credentials.model';
 
 
 @Component({
@@ -15,12 +14,12 @@ import { LoginCredentialsModel } from './login.model'
 export class LoginPage {
   private browser: InAppBrowser;
   private loginUrl: string;
-  private loginCredentials = new LoginCredentialsModel();
+  private loginCredentials = new CredentialsModel();
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public storage: Storage,
+    public credentialsService: CredentialsService,
     public api: Api
   ) {
     this.loginUrl = api.loginUrl;
@@ -38,17 +37,11 @@ export class LoginPage {
     let { url } = event;
 
     this.loginCredentials = this.loginCredentials.parse(url);
-
+    console.log(url)
     if (this.loginCredentials.isDefined()) {
-      this.saveCredentials(this.loginCredentials);
+      this.credentialsService.set(this.loginCredentials.get());
       this.browser.close();
       this.navCtrl.push(HomePage);
     }
-  }
-
-  private saveCredentials({ token, refresh, id }: LoginCredentialsModel): void {
-    this.storage.set('token', token);
-    this.storage.set('refresh', refresh);
-    this.storage.set('id', id);
   }
 }

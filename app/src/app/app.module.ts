@@ -19,6 +19,7 @@ import { ArtistImageComponent } from '../components/artist-image/artist-image';
 import { Api } from '../providers/api';
 import { LocationService } from '../providers/location.service';
 import { ConcertService } from '../providers/concert.service';
+import { CredentialsService } from '../providers/credentials.service';
 
 
 @NgModule({
@@ -46,9 +47,10 @@ import { ConcertService } from '../providers/concert.service';
     ConcertsPage
   ],
   providers: [
+    CredentialsService,
+    Api,
     ConcertService,
     LocationService,
-    Api,
     Storage,
     Geolocation,
     { provide: ErrorHandler, useClass: IonicErrorHandler }

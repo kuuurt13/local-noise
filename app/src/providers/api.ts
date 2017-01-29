@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http, URLSearchParams } from '@angular/http';
+import { Http, URLSearchParams, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { ENV } from '../env';
-
 
 @Injectable()
 export class Api {
@@ -17,18 +16,29 @@ export class Api {
 
   // Spotify
   loginUrl: string = `${this.url}/spotify/auth/login`;
+  createPlaylistUrl: string = `${this.url}/spotify/playlists/create`;
 
   constructor (
     public http: Http
   ) {}
 
-  get(url: string, params: any): Observable<any> {
+  public get(url: string, params: any): Observable<any> {
     const search: URLSearchParams = this.getParams(params);
 
     return this.http
       .get(url, {
         search
       })
+      .map(res => res.json());
+  }
+
+  public post(url: string, data: any): Observable<any> {
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers });
+    const body = JSON.stringify(data);
+
+    return this.http
+      .post(url, body, options)
       .map(res => res.json());
   }
 
