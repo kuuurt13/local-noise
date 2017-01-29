@@ -31,7 +31,7 @@ async function search(artistName) {
       return searchById(id);
     }
 
-    return Promise.reject({ status: 404 });
+    return {};
   } catch (error) {
     return Promise.reject({ status: 500 });
   }

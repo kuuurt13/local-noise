@@ -73,7 +73,7 @@ async function getByArtist(artistName, id) {
     const { id = artist.id, tracks } = artist || {};
 
     if (!id && !tracks) {
-      throw { status: 404, message: 'Artist not found' };
+      return {};
     }
 
     if (tracks) {

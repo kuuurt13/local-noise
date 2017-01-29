@@ -3,10 +3,15 @@ import spotifyPlaylist from '../services/playlists';
 
 const router = express.Router();
 
-router.use('/playlists', hasTokens);
 router.post('/playlists/create/:userId', createPlaylist);
 
 async function createPlaylist(req, res) {
+  const { token, refresh } = req.body;
+
+  if (!token || !refresh) {
+    res.status(400).json({ error: 'Missing Spotify Auth tokens' });
+  }
+
   try {
     const { userId } = req.params;
 
@@ -16,16 +21,6 @@ async function createPlaylist(req, res) {
   } catch (err) {
     res.status(err.status || 500).json(err);
   }
-}
-
-function hasTokens(req, res, next) {
-  const { token, refresh } = req.body;
-
-  if (!token || !refresh) {
-    res.status(400).json({ error: 'Missing Spotify Auth tokens' });
-  }
-
-  next();
 }
 
 export default router;
