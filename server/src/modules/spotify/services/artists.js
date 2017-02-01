@@ -7,7 +7,7 @@ export default {
   searchById
 };
 
-async function search(artistName) {
+async function search(artistName, token) {
   try {
     let artist;
 
@@ -18,7 +18,7 @@ async function search(artistName) {
       return Promise.resolve(artist);
     }
 
-    let { artists } = await spotify.search('artist', { artist: artistName });
+    let { artists } = await spotify.search('artist', { artist: artistName, token });
 
     artist = artists.items.find(artist => {
       return stringsMatch(artist.name, artistName);
@@ -28,7 +28,7 @@ async function search(artistName) {
       const { id } = artist;
 
       spotifyCache.set(artistName, { id });
-      return searchById(id);
+      return searchById(id, token);
     }
 
     return {};
@@ -37,6 +37,6 @@ async function search(artistName) {
   }
 }
 
-function searchById(id) {
-  return spotify.get(`/artists/${id}`);
+function searchById(id, token) {
+  return spotify.get(`/artists/${id}`, {}, token);
 }

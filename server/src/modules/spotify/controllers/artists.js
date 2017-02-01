@@ -20,7 +20,7 @@ async function searchCachedArtists(req, res, next) {
     const { id, tracks } = artist;
 
     req.id = id;
-    req.tracks = tracks;
+    req.tracks = Object.keys(tracks).length ? tracks : false;
   }
 
   next();
@@ -36,7 +36,7 @@ async function getArtistTracks(req, res) {
   }
 
   try {
-    const artistTracks = await tracksService.getByArtist(query, id);
+    const artistTracks = await tracksService.getByArtist({ name: query, id });
 
     return res.status(200).json(artistTracks);
   } catch (error) {

@@ -12,10 +12,10 @@ export default {
   mapTrack
 };
 
-async function getTrack(track, artist, ignoreCache) {
+async function getTrack({ track, artist, token, ignoreCache }) {
   try {
     if (!ignoreCache) {
-      let { tracks } = await artistsService.search(artist);
+      let { tracks } = await artistsService.search(artist, token);
 
       if (tracks && tracks[track]) {
         console.log('CACHE: Spotify > Track:', track);
@@ -25,25 +25,33 @@ async function getTrack(track, artist, ignoreCache) {
 
     const { tracks } = await spotify.search('tracks', { track, artist });
 
-    let matchedTrack = tracks.items.find(item => {
+    const { name, id } = tracks.items.find(item => {
       const { name, artists } = item;
-      const isMatch = stringsMatch(name, track);
+      return !track ? hasArtist(artist, artists) : stringsMatch(name, track);
+    }) || {};
 
-      return isMatch && artist ? hasArtist(artist, artists) : isMatch;
-    });
+    if (name && id) {
+      spotifyCache.set(artist, {
+        id,
+        ...mapTrack(name, id)
+      });
+      return mapTrack(name, id);
+    }
 
-    spotifyCache.set(artist, mapTrack(track, matchedTrack.id));
-
-    return mapTrack(track, matchedTrack.id);
+    return {};
   } catch (error) {
     throw error;
   }
 }
 
-async function getAllTracks(tracks, artistName) {
+async function getAllTracks({ tracks, artistName, token }) {
   try {
     const requests = tracks.map(track => {
-      return getTrack(track.name || track, track.artist || artistName);
+      return getTrack({
+        track: track.name || track,
+        artist: track.artist || artistName,
+        token
+      });
     });
 
     let resps = await Promise.all(requests);
@@ -58,37 +66,34 @@ async function getAllTracks(tracks, artistName) {
   }
 }
 
-async function getByArtist(artistName, id) {
+async function getByArtist({ name, id, token }) {
   try {
     let artist;
 
     if (!id) {
-      artist = await spotifyCache.get(artistName);
-
-      if (!artist.id) {
-        artist = await artistsService.search(artistName);
-      }
+      artist = await spotifyCache.get(name);
     }
 
     const { id = artist.id, tracks } = artist || {};
 
-    if (!id && !tracks) {
-      return {};
+    if (!id && !Object.keys(tracks).length) {
+      return getTrack({ artist: name, token, ignoreCache: true });
     }
 
     if (tracks) {
-      console.log('CACHE: Spotify > Artist Tracks:', artistName);
+      console.log('CACHE: Spotify > Artist Tracks:', name);
       return tracks;
     }
 
-    const { tracks: artistTracks } = await getTracksByArtistId(id);
+    console.log('getTracksByArtistId', token);
+    const { tracks: artistTracks } = await getTracksByArtistId(id, token);
 
     const mappedTracks = artistTracks.reduce((tracks, track) => {
       tracks[track.name] = track.id;
       return tracks;
     }, {});
 
-    spotifyCache.set(artistName, {
+    spotifyCache.set(name, {
       id,
       ...mappedTracks
     });
@@ -99,12 +104,17 @@ async function getByArtist(artistName, id) {
   }
 }
 
-async function getByArtists(artists) {
+async function getByArtists(artists, token) {
   if (!artists) {
     throw { error: 400, message: 'Requires artists' };
   }
 
-  const tracks = await Promise.all(artists.map(artist => getByArtist(artist)));
+  const tracks = await Promise.all(
+    artists.map(artist => {
+      return getByArtist({ name: artist, token });
+    })
+  );
+
   return tracks.reduce((tracks, track) => {
     return { ...track, ...tracks };
   }, {});
@@ -116,8 +126,12 @@ function mapTrack(name, id) {
   return track;
 }
 
-function getTracksByArtistId(id) {
-  return spotify.get(`/artists/${id}/top-tracks`, { country: 'US' });
+function getTracksByArtistName({ name, token }) {
+  searchTracks
+}
+
+function getTracksByArtistId(id, token) {
+  return spotify.get(`/artists/${id}/top-tracks`, { country: 'US' }, token);
 }
 
 function hasArtist(artistName, artists) {

@@ -10,36 +10,52 @@ export default {
 
 // TODO: Clean up search
 function search(action, params) {
-  let { artist, track } = params;
+  let { artist, track, token } = params;
 
   switch (action) {
     case 'artist':
-      return searchArtists(artist);
+      return searchArtists(artist, token);
 
     case 'tracks':
-      return searchTracks(track, artist);
+      return searchTracks({ track, artist, token });
   }
 }
 
-function searchArtists(q) {
+function searchArtists(q, token) {
   const params = { q, type: 'artist' };
-  return get('/search', params);
+  return get('/search', params, token);
 }
 
-function searchTracks(track, artist) {
-  const q = artist ? `artist:${artist} ${track}` : track;
-  const params = { q, type: 'track' };
+function searchTracks({ track, artist, token }) {
+  let q = artist ? [`artist:${artist}`] : [];
 
-  return get('/search', params);
+  if (track) {
+    q.push(track);
+  }
+
+  const params = { q: q.join(' '), type: 'track' };
+
+  return get('/search', params, token);
 }
 
-function get(url, params) {
+function get(url, params, token) {
+  let headers = {};
+
+  if (token) {
+    params.market = 'from_token';
+    headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+  }
+
   console.log('REQUEST: Spotify =>', 'GET', url, params || 'N/A');
 
   return axios({
     method: 'get',
     url: `${apiUrl}${url}`,
-    params
+    params,
+    headers
   })
   .then(res => res.data);
 }

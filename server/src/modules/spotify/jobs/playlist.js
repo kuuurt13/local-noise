@@ -17,9 +17,9 @@ async function addTracksToPlaylist(job, done) {
 
   try {
     if (tracks) {
-      artistTracks = await tracksService.getAllTracks(tracks);
+      artistTracks = await tracksService.getAllTracks({ tracks, token });
     } else if (artists) {
-      artistTracks = await tracksService.getByArtists(artists);
+      artistTracks = await tracksService.getByArtists(artists, token);
     }
 
     const playlist = await playlistService.addTracks({
@@ -31,8 +31,8 @@ async function addTracksToPlaylist(job, done) {
     });
 
     done(null, playlist);
-  } catch (err) {
-    console.log('JOB > SPOTIFY: ERROR: Add tracks to playlist');
+  } catch (error) {
+    console.log('JOB > SPOTIFY: ERROR: Add tracks to playlist', error);
     done();
   }
 }
