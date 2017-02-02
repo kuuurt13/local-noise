@@ -35,6 +35,13 @@ export class ConcertsPage {
     this.getConcerts();
   }
 
+  public exportConcerts(concerts): void {
+    const artists = this.getArtists(concerts);
+    this.concertService
+      .createPlaylistArtists(artists, this.getPlaylistName(), this.credentials)
+      .subscribe();
+  }
+
   private getConcerts(infiniteScroll?: any) {
     this.page++;
 
@@ -51,13 +58,6 @@ export class ConcertsPage {
           infiniteScroll.enable(totalEntries < this.concerts.length);
         }
       })
-      .subscribe();
-  }
-
-  private exportConcerts(concerts): void {
-    const artists = this.getArtists(concerts);
-    this.concertService
-      .createPlaylistArtists(artists, this.getPlaylistName(), this.credentials)
       .subscribe();
   }
 
