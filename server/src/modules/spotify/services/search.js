@@ -57,5 +57,6 @@ function get(url, params, token) {
     params,
     headers
   })
-  .then(res => res.data);
+  .then(res => res.data)
+  .catch(err => err.response);
 }
