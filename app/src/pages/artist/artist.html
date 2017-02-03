@@ -1,0 +1,22 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{artist.displayName}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding text-center>
+  <artist-image [artist]="artist" [size]="'lg'"></artist-image>
+
+  <ion-card *ngFor="let song of set.fullSetlist">
+      <ion-card-content>
+        <ion-row>
+          <ion-col>
+            {{ song.name }}
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+</ion-content>

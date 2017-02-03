@@ -23,6 +23,13 @@
             <p>{{ concert.location.city }}</p>
           </ion-col>
         </ion-row>
+        <ion-row>
+          <ion-col text-right>
+            <button ion-button clear (click)="goToArtist(concert?.performance[0]?.artist)">
+              View&nbsp;<ion-icon name="arrow-forward"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
       </ion-card-content>
     </ion-card>
   </ion-list>

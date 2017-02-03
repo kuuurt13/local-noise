@@ -11,6 +11,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { LocationPage } from '../pages/location/location';
 import { ConcertDatesPage } from '../pages/concert-dates/concert-dates';
 import { ConcertsPage } from '../pages/concerts/concerts';
+import { ArtistPage } from '../pages/artist/artist';
 
 // Components
 import { ArtistImageComponent } from '../components/artist-image/artist-image';
@@ -19,6 +20,7 @@ import { ArtistImageComponent } from '../components/artist-image/artist-image';
 import { Api } from '../providers/api';
 import { LocationService } from '../providers/location.service';
 import { ConcertService } from '../providers/concert.service';
+import { SetlistService } from '../providers/setlist.service';
 import { CredentialsService } from '../providers/credentials.service';
 
 
@@ -31,6 +33,7 @@ import { CredentialsService } from '../providers/credentials.service';
     LocationPage,
     ConcertDatesPage,
     ConcertsPage,
+    ArtistPage,
     ArtistImageComponent
   ],
   imports: [
@@ -44,12 +47,14 @@ import { CredentialsService } from '../providers/credentials.service';
     TabsPage,
     LocationPage,
     ConcertDatesPage,
-    ConcertsPage
+    ConcertsPage,
+    ArtistPage
   ],
   providers: [
     CredentialsService,
     Api,
     ConcertService,
+    SetlistService,
     LocationService,
     Storage,
     Geolocation,

@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { ConcertService } from '../../providers/concert.service';
 import { CredentialsService } from '../../providers/credentials.service';
 import { CredentialsModel } from '../../models/credentials.model';
+import { ArtistPage } from '../artist/artist';
 
 @Component({
   selector: 'page-concerts',
@@ -35,14 +36,20 @@ export class ConcertsPage {
     this.getConcerts();
   }
 
-  public exportConcerts(concerts): void {
+  exportConcerts(concerts) {
     const artists = this.getArtists(concerts);
     this.concertService
       .createPlaylistArtists(artists, this.getPlaylistName(), this.credentials)
       .subscribe();
   }
 
-  private getConcerts(infiniteScroll?: any) {
+  goToArtist(artist: any) {
+    this.navCtrl.push(ArtistPage, {
+      artist
+    });
+  }
+
+  getConcerts(infiniteScroll?: any) {
     this.page++;
 
     this.concertService
@@ -51,7 +58,6 @@ export class ConcertsPage {
         const { results = [], totalEntries = 0 } = concerts;
 
         this.concerts = this.concerts.concat(results);
-        console.log(this.concerts);
 
         if (infiniteScroll) {
           infiniteScroll.complete();
@@ -61,7 +67,7 @@ export class ConcertsPage {
       .subscribe();
   }
 
-  private getArtists(concerts: any[]): string[] {
+  getArtists(concerts: any[]): string[] {
     return concerts.map(concert => {
       return concert.performance[0].artist.displayName;
     });

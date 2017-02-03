@@ -18,11 +18,15 @@ export class Api {
   loginUrl: string = `${this.url}/spotify/auth/login`;
   createPlaylistUrl: string = `${this.url}/spotify/playlists/create`;
 
+
+  // SetlistFm
+  setlistUrl: string = `${this.url}/setlistfm/setlists`;
+
   constructor (
     public http: Http
   ) {}
 
-  public get(url: string, params: any): Observable<any> {
+  public get(url: string, params: any = {}): Observable<any> {
     const search: URLSearchParams = this.getParams(params);
 
     return this.http
