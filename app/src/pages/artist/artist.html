@@ -9,11 +9,17 @@
 
 <ion-content padding text-center>
   <artist-image [artist]="artist" [size]="'lg'"></artist-image>
-
+  <button ion-button full icon-right color="danger" small
+    (click)="createPlaylist(artist.displayName, set.fullSetlist)">
+    <div>Create Playlist</div>
+  </button>
   <ion-card *ngFor="let song of set.fullSetlist">
       <ion-card-content>
         <ion-row>
-          <ion-col>
+          <ion-col *ngIf="song.cover">
+            {{ song.name }} ({{ song.cover.name }} Cover)
+          </ion-col>
+          <ion-col *ngIf="!song.cover">
             {{ song.name }}
           </ion-col>
         </ion-row>

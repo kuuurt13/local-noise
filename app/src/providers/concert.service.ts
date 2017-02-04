@@ -35,13 +35,6 @@ export class ConcertService extends Api {
     return this.get(url, params);
   }
 
-  public createPlaylistArtists(artists: string[], name: string, credentials: CredentialsModel): Observable<any> {
-    const url = `${this.createPlaylistUrl}/${credentials.id}`;
-    const data = Object.assign({ artists, name }, credentials.get());
-
-    return super.post(url, data);
-  }
-
   private currentDate(): string {
     const today = new Date();
     return [

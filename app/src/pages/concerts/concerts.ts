@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { ConcertService } from '../../providers/concert.service';
-import { CredentialsService } from '../../providers/credentials.service';
-import { CredentialsModel } from '../../models/credentials.model';
+import { PlaylistService } from '../../providers/playlist.service';
 import { ArtistPage } from '../artist/artist';
 
 @Component({
@@ -10,7 +9,6 @@ import { ArtistPage } from '../artist/artist';
   templateUrl: 'concerts.html'
 })
 export class ConcertsPage {
-  private credentials: CredentialsModel;
   private startDate: string;
   private endDate: string;
   private page: number = 0;
@@ -20,8 +18,8 @@ export class ConcertsPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public credentialsService: CredentialsService,
-    public concertService: ConcertService
+    public concertService: ConcertService,
+    public playlistService: PlaylistService
   ) {
     this.location = navParams.get('location');
     this.startDate = navParams.get('startDate');
@@ -29,17 +27,12 @@ export class ConcertsPage {
   }
 
   ionViewDidLoad() {
-    this.credentialsService
-      .get()
-      .then(creds => this.credentials = creds);
-
     this.getConcerts();
   }
 
   exportConcerts(concerts) {
-    const artists = this.getArtists(concerts);
-    this.concertService
-      .createPlaylistArtists(artists, this.getPlaylistName(), this.credentials)
+    this.playlistService
+      .createArtistsPlaylist(this.getArtists(concerts), this.getPlaylistName())
       .subscribe();
   }
 

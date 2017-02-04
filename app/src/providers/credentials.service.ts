@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { CredentialsModel } from '../models/credentials.model';
+import { Observable, ReplaySubject } from 'rxjs';
 
 @Injectable()
 export class CredentialsService {
+  private credentialSubject = new ReplaySubject();
 
   constructor(
     public storage: Storage
@@ -16,7 +18,11 @@ export class CredentialsService {
   }
 
   set(creds: any): void {
-    creds = JSON.stringify(creds || {});
-    this.storage.set('credentials', creds);
+    this.credentialSubject.next(new CredentialsModel(creds));
+    this.storage.set('credentials', JSON.stringify(creds || {}));
+  }
+
+  subscribe(): ReplaySubject<any> {
+    return this.credentialSubject;
   }
 }

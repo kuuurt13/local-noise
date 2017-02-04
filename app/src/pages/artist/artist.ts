@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { SetlistService } from '../../providers/setlist.service';
+import { PlaylistService } from '../../providers/playlist.service';
 
 
 @Component({
@@ -14,13 +15,27 @@ export class ArtistPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public setlistService: SetlistService
+    public setlistService: SetlistService,
+    public playlistService: PlaylistService
   ) {
     this.artist = navParams.get('artist');
   }
 
   ionViewDidLoad() {
     this.getSetlist();
+  }
+
+  createPlaylist(artist: string, setlist: any[]) {
+    const tracks = setlist.map(song => {
+      if (song.cover) {
+        return { artist: song.cover.name, name: song.name };
+      }
+      return { artist, name: song.name };
+    });
+
+    this.playlistService
+      .createTracksPlaylist(tracks, `${this.artist.displayName} Setlist`)
+      .subscribe();
   }
 
   private getSetlist() {
@@ -33,5 +48,4 @@ export class ArtistPage {
         .subscribe();
     }
   }
-
 }

@@ -4,6 +4,9 @@ import { Storage } from '@ionic/storage';
 import { Geolocation } from 'ionic-native';
 import { MyApp } from './app.component';
 
+// Providers
+import { ProvidersModule } from '../providers/providers.module';
+
 // Pages
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
@@ -15,13 +18,6 @@ import { ArtistPage } from '../pages/artist/artist';
 
 // Components
 import { ArtistImageComponent } from '../components/artist-image/artist-image';
-
-// Providers
-import { Api } from '../providers/api';
-import { LocationService } from '../providers/location.service';
-import { ConcertService } from '../providers/concert.service';
-import { SetlistService } from '../providers/setlist.service';
-import { CredentialsService } from '../providers/credentials.service';
 
 
 @NgModule({
@@ -37,7 +33,8 @@ import { CredentialsService } from '../providers/credentials.service';
     ArtistImageComponent
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    ProvidersModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -51,11 +48,6 @@ import { CredentialsService } from '../providers/credentials.service';
     ArtistPage
   ],
   providers: [
-    CredentialsService,
-    Api,
-    ConcertService,
-    SetlistService,
-    LocationService,
     Storage,
     Geolocation,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
