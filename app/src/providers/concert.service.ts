@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Api } from './api';
-import { CredentialsModel } from '../models/credentials.model';
+
 
 @Injectable()
 export class ConcertService extends Api {

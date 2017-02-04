@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { CredentialsModel } from '../models/credentials.model';
-import { Observable, ReplaySubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Injectable()
 export class CredentialsService {
