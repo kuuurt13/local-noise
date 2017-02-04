@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import stringsMatch from '../../src/shared/stringsMatch';
 
 describe('stringsMatch', () => {
-  it('should assert if strings exactly match', () => {
+  it('should return true if strings exactly match', () => {
     let a = 'The National';
     let b = 'The National';
 
@@ -11,7 +11,7 @@ describe('stringsMatch', () => {
     expect(result).to.be.true;
   });
 
-  it('should assert if strings match within a distance of 0.95', () => {
+  it('should return true if strings match within a distance of 0.95', () => {
     let a = 'Blink-182';
     let b = 'Blink182';
 
@@ -20,8 +20,17 @@ describe('stringsMatch', () => {
     expect(result).to.be.true;
   });
 
-  it('should assert if strings don\'t match', () => {
+  it('should return false if strings don\'t match', () => {
     let a = 'The National';
+    let b = 'National';
+
+    let result = stringsMatch(a, b);
+
+    expect(result).to.be.false;
+  });
+
+  it('should return false if either string are undefined', () => {
+    let a = '';
     let b = 'National';
 
     let result = stringsMatch(a, b);

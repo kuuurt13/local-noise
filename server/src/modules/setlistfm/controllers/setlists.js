@@ -15,7 +15,7 @@ async function getSetlistById(req, res) {
     }
 
     // Add caching
-    const setlists = await setlistApi.get(mid);
+    const setlists = await setlistApi.search(mid);
 
     res.status(200).json(setlists);
   } catch (error) {

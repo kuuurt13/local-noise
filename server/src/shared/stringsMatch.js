@@ -2,15 +2,27 @@ import strcmp from 'strcmp';
 
 const distance = 0.95;
 const wildcards = [
-  { a: '&', b: 'and' },
-  { a: '-', b: '' }
-];
+  ['&', 'and'],
+  ['-'],
+  ['remastered'],
+  ['studio'],
+  ['acoustic'],
+  ['version'],
+  [/^(i)/i]
+]
+.map(([a, b]) => {
+  a = typeof a !== 'object' ? new RegExp(`(${a})`, 'ig') : a;
+  return [a, b];
+});
+
 
 export default function stringsMatch(a, b) {
+  if (!a || !b) return false;
+
   let items = [a, b].map(item => {
     item = item.toLowerCase();
-    wildcards.forEach(w => {
-      item = item.replace(w.a, w.b);
+    wildcards.forEach(([a, b = '']) => {
+      item = item.replace(a, b).trim();
     });
     return item;
   });
