@@ -14,6 +14,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { LocationPage } from '../pages/location/location';
 import { ConcertDatesPage } from '../pages/concert-dates/concert-dates';
 import { ConcertsPage } from '../pages/concerts/concerts';
+import { ConcertDetailPage } from '../pages/concert-detail/concert-detail';
 import { ArtistPage } from '../pages/artist/artist';
 
 // Components
@@ -30,7 +31,8 @@ import { ArtistImageComponent } from '../components/artist-image/artist-image';
     ConcertDatesPage,
     ConcertsPage,
     ArtistPage,
-    ArtistImageComponent
+    ArtistImageComponent,
+    ConcertDetailPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -45,7 +47,8 @@ import { ArtistImageComponent } from '../components/artist-image/artist-image';
     LocationPage,
     ConcertDatesPage,
     ConcertsPage,
-    ArtistPage
+    ArtistPage,
+    ConcertDetailPage
   ],
   providers: [
     Storage,

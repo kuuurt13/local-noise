@@ -1,0 +1,29 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ concert.displayName }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <h1>{{ concert.displayName }}</h1>
+
+  <ion-card>
+    <ion-card-header>
+      <h2>Lineup</h2>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let performance of concert.performance" (click)="goToArtist(performance.artist)">
+          <ion-avatar item-left>
+            <artist-image [artist]="performance.artist"></artist-image>
+          </ion-avatar>
+
+          <h2>{{ performance.artist.displayName }}</h2>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

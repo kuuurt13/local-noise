@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { ConcertService } from '../../providers/concert.service';
 import { PlaylistService } from '../../providers/playlist.service';
-import { ArtistPage } from '../artist/artist';
+import { ConcertDetailPage } from '../concert-detail/concert-detail';
 
 @Component({
   selector: 'page-concerts',
@@ -36,9 +36,9 @@ export class ConcertsPage {
       .subscribe();
   }
 
-  goToArtist(artist: any) {
-    this.navCtrl.push(ArtistPage, {
-      artist
+  goToConcert(concert: any) {
+    this.navCtrl.push(ConcertDetailPage, {
+      concert
     });
   }
 
