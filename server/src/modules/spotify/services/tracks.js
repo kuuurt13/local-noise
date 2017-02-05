@@ -33,9 +33,10 @@ async function getTrack({ track, artist, token, ignoreCache }) {
     if (name && id) {
       spotifyCache.set(artist, {
         id,
-        ...mapTrack(name, id)
+        ...mapTrack(track, id)
       });
-      return mapTrack(name, id);
+
+      return mapTrack(track, id);
     }
 
     return {};
