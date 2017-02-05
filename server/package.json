@@ -7,7 +7,7 @@
     "start": "npm run redis:start && npm run build && node dist/index.js",
     "dev": "npm run redis:start && nodemon --exec babel-node src/index.js",
     "build": "babel src --out-dir dist",
-    "debug": "babel src --out-dir dist -s",
+    "debug": "babel src --out-dir dist --watch --source-maps",
     "redis:start": "redis-server /etc/redis/redis.conf &",
     "redis:flush": "redis-cli FLUSHALL",
     "redis:stop": "redis-cli shutdown &",
