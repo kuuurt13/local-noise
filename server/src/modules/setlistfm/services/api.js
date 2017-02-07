@@ -1,5 +1,6 @@
 import axios from 'axios';
 import setlistfmConfig from '../../../configs/setlistfm';
+import setlistCache from './cache';
 
 const { apiUrl } = setlistfmConfig;
 
@@ -8,9 +9,18 @@ export default {
 };
 
 async function search(mid, params) {
-  let setlists = await getSetlists(mid);
+  let setlist = await setlistCache.get(mid);
 
-  return findLatestSet(setlists);
+  if (setlist) {
+    console.log('CACHE: Setlist =>', mid);
+    return setlist;
+  }
+
+  const setlists = await getSetlists(mid);
+
+  setlist = findLatestSet(setlists);
+
+  return setlistCache.set(mid, setlist);
 }
 
 function parseResp(data) {
@@ -32,7 +42,7 @@ function findLatestSet(setlists) {
     return { ...setlist, fullSetlist: set };
   }
 
-  return setlist || {};
+  return {};
 }
 
 function getSetlists(mid) {
