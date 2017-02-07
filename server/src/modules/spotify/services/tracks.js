@@ -3,7 +3,6 @@ import spotifyCache from '../services/cache';
 import artistsService from '../services/artists';
 import spotify from './search';
 
-
 export default {
   getTrack,
   getAllTracks,
@@ -125,10 +124,6 @@ function mapTrack(name, id) {
   let track = {};
   track[name] = id;
   return track;
-}
-
-function getTracksByArtistName({ name, token }) {
-  searchTracks
 }
 
 function getTracksByArtistId(id, token) {

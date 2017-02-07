@@ -16,7 +16,6 @@ async function get(mid) {
   }
 }
 
-
 function set(mid, value) {
   if (mid && value && Object.keys(value).length) {
     redis.set(redisKey + mid, JSON.stringify(value), 'EX', secondsTillEndOfDay());
