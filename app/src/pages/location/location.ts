@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { NavController, NavParams } from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
 import { LocationService } from '../../providers/location.service';
@@ -10,14 +11,17 @@ import { LocationModel } from '../../models/location.model';
   templateUrl: 'location.html'
 })
 export class LocationPage {
-  private locations: LocationModel[];
+  private searchSubject: Subject<any> = new Subject();
+  locations: LocationModel[];
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public locationService: LocationService,
     public storage: Storage
-  ) { }
+  ) {
+    this.subscribeToSearch();
+   }
 
   ionViewDidLoad() {
     Geolocation.getCurrentPosition()
@@ -30,22 +34,44 @@ export class LocationPage {
       });
   }
 
-  public setLocation(location: LocationModel): void {
+  setLocation(location: LocationModel) {
     this.storage.set('locationName', location.displayName);
     this.storage.set('locationId', location.id);
   }
 
-  private searchByCoordinates(latitude, longitude): void {
+  onSearch(event: any) {
+    this.searchSubject.next(event);
+  }
+
+  searchByCoordinates(latitude: number, longitude: number) {
     this.locationService
       .searchByCoordinates(latitude, longitude)
+      .map(({ results }) => this.locations = results)
+      .subscribe();
+  }
+
+  searchByName(query: string) {
+    this.locationService
+      .searchByName(query)
       .map(({ results }) => {
-        this.locations = results.reduce((locales, locale) => {
-          if (!locales.find(loc => loc.id === locale.id)) {
-            locales.push(new LocationModel(locale));
-          }
-          return locales;
-        }, []);
+        if (results.length) {
+          return this.locations = results;
+        }
+
+        return this.locations = this.locations.filter(l => {
+          return l.displayName.toLowerCase().indexOf(query) > -1;
+        })
       })
+      .subscribe();
+  }
+
+  private subscribeToSearch() {
+    this.searchSubject
+      .map(event => event.target.value)
+      .filter(value => value.length > 2)
+      .debounceTime(750)
+      .distinctUntilChanged()
+      .map(value => this.searchByName(value))
       .subscribe();
   }
 }

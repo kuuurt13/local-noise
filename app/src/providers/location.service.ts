@@ -3,29 +3,53 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { Api } from './api';
+import { LocationModel } from '../models/location.model';
 
 
 @Injectable()
 export class LocationService extends Api {
 
-  constructor(
-    public http: Http
-  ) {
+  constructor(public http: Http) {
     super(http);
   }
 
-  public searchByCoordinates(lat: number, lng: number): Observable<any> {
+  searchByCoordinates(lat: number, lng: number): Observable<any> {
     const url = this.locationUrl;
     const params = {
       location: `${lat},${lng}`
     };
 
-    return this
+    return super
       .get(url, params)
-      .map(data => {
-        data.results = data.results.map(res => res.metroArea);
+      .map(this.unwrap)
+      .map(this.getDistinct);
+  }
 
-        return data;
-      });
+  searchByName(query: string): Observable<any> {
+    const url = this.locationUrl;
+    const params = { query };
+
+    return super
+      .get(url, params)
+      .map(this.unwrap)
+      .map(this.getDistinct);
+  }
+
+  private unwrap(data: any): any {
+    data.results = data.results || [];
+    data.results = data.results.map(res => res.metroArea);
+
+    return data;
+  }
+
+  private getDistinct(data: any) {
+    data.results = data.results.reduce((locales, locale) => {
+      if (!locales.find(loc => loc.id === locale.id)) {
+        locales.push(new LocationModel(locale));
+      }
+      return locales;
+    }, []);
+
+    return data;
   }
 }

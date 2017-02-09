@@ -10,8 +10,8 @@ export class LocationModel {
   constructor(location: any = {}) {
     this.id = location.id;
     this.city = location.displayName;
-    this.state = location.state.displayName;
-    this.country = location.country.displayName;
+    this.state = location.state ? location.state.displayName : '';
+    this.country = location.country ? location.country.displayName : '';
     this.lat = location.lat;
     this.lng = location.lng;
 
@@ -19,6 +19,6 @@ export class LocationModel {
   }
 
   private getDisplayName(): string {
-    return `${this.city}, ${this.state}`;
+    return `${this.city}, ${this.state || this.country}`;
   }
 }
