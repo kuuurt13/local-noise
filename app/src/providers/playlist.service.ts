@@ -22,14 +22,29 @@ export class PlaylistService extends Api {
     const url = `${this.createPlaylistUrl}/${this.credentials.id}`;
     const data = this.addCredentials({ artists, name });
 
-    return super.post(url, data);
+    return super
+      .post(url, data)
+      .map((res) => this.updatedCredentials(res));
   }
 
   createTracksPlaylist(tracks: any[], name: string): Observable<any> {
     const url = `${this.createPlaylistUrl}/${this.credentials.id}`;
     const data = this.addCredentials({ tracks, name });
-    console.log(url, data)
-    return super.post(url, data);
+
+    return super
+      .post(url, data)
+      .map((res) => this.updatedCredentials(res));
+  }
+
+  private updatedCredentials(res): Observable<any> {
+    const { attempts = 0, token } = res;
+
+    if (attempts > 1 && token) {
+      this.credentials.token = token;
+      this.credentialsService.set(this.credentials);
+    }
+
+    return res;
   }
 
   private addCredentials(params): any {
