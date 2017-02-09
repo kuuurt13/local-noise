@@ -1,33 +1,46 @@
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Platform, App } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 import { ENV } from '../env';
-import { TabsPage } from '../pages/tabs/tabs';
 import { CredentialsService } from '../providers/credentials.service';
-
+import { StorageService } from '../providers/storage.service';
+import { ConcertDatesPage } from '../pages/concert-dates/concert-dates';
+import { LoginPage } from '../pages/login/login';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage = TabsPage;
 
   constructor(
     platform: Platform,
-    public credentialsService: CredentialsService
+    public appController: App,
+    public credentialsService: CredentialsService,
+    public storage: StorageService
   ) {
-    platform.ready().then(() => {
+    platform.ready()
+    .then(() => storage.getAll('locationId', 'credentials'))
+    .then(res => {
+      this.setupDev();
+      this.redirect(res);
       StatusBar.styleDefault();
       Splashscreen.hide();
-
-      if (ENV && ENV.ENVIRONMENT === 'dev') {
-        this.setupDev();
-      }
     });
   }
 
   private setupDev() {
-    const { SPOTIFY_CREDENTIALS = {} } = ENV;
-    this.credentialsService.set(SPOTIFY_CREDENTIALS);
+    const { ENVIRONMENT, SPOTIFY_CREDENTIALS } = ENV as any;
+
+    if (ENVIRONMENT === 'dev' && SPOTIFY_CREDENTIALS) {
+      this.credentialsService.set(SPOTIFY_CREDENTIALS);
+    }
+  }
+
+  private redirect([ location, credentials ]: any[]) {
+    let page: any = LoginPage;
+
+    if (location && credentials.isDefined()) page = ConcertDatesPage;
+
+    return this.appController.getRootNav().push(page);
   }
 }

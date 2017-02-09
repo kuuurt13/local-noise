@@ -5,6 +5,8 @@ export class CredentialsModel {
   public id: string;
 
   constructor(creds: any = {}) {
+    creds = creds || {};
+
     this.token = creds.token;
     this.refresh = creds.refresh;
     this.id = creds.id;

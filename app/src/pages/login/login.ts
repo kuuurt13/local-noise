@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { App } from 'ionic-angular';
 import { InAppBrowser, InAppBrowserEvent } from 'ionic-native';
-import { HomePage } from '../home/home'
+import { LocationPage } from '../location/location'
 import { Api } from './../../providers/api';
 import { CredentialsService } from '../../providers/credentials.service';
 import { CredentialsModel } from '../../models/credentials.model';
@@ -17,8 +17,7 @@ export class LoginPage {
   private loginCredentials = new CredentialsModel();
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
+    public appCtrl: App,
     public credentialsService: CredentialsService,
     public api: Api
   ) {
@@ -37,11 +36,11 @@ export class LoginPage {
     let { url } = event;
 
     this.loginCredentials = this.loginCredentials.parse(url);
-    console.log(url)
+
     if (this.loginCredentials.isDefined()) {
       this.credentialsService.set(this.loginCredentials.get());
       this.browser.close();
-      this.navCtrl.push(HomePage);
+      this.appCtrl.getRootNav().push(LocationPage);
     }
   }
 }

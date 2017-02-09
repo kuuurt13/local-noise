@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { NavController, NavParams } from 'ionic-angular';
+import { Subject } from 'rxjs';
+import { App} from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
 import { LocationService } from '../../providers/location.service';
 import { Storage } from '@ionic/storage';
 import { LocationModel } from '../../models/location.model';
+import { ConcertDatesPage } from '../concert-dates/concert-dates';
 
 @Component({
   selector: 'page-location',
@@ -15,8 +16,7 @@ export class LocationPage {
   locations: LocationModel[];
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
+    public appCtrl: App,
     public locationService: LocationService,
     public storage: Storage
   ) {
@@ -37,6 +37,7 @@ export class LocationPage {
   setLocation(location: LocationModel) {
     this.storage.set('locationName', location.displayName);
     this.storage.set('locationId', location.id);
+    this.appCtrl.getRootNav().push(ConcertDatesPage);
   }
 
   onSearch(event: any) {
@@ -58,8 +59,9 @@ export class LocationPage {
           return this.locations = results;
         }
 
-        return this.locations = this.locations.filter(l => {
-          return l.displayName.toLowerCase().indexOf(query) > -1;
+        return this.locations = this.locations.filter(locale => {
+          const { displayName } = locale;
+          return displayName.toLowerCase().indexOf(query) > -1;
         })
       })
       .subscribe();
