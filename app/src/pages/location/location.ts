@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Subject } from 'rxjs';
 import { App} from 'ionic-angular';
-import { Geolocation } from 'ionic-native';
+import { Geolocation } from '@ionic-native/geolocation';
 import { LocationService } from '../../providers/location.service';
 import { Storage } from '@ionic/storage';
 import { LocationModel } from '../../models/location.model';
@@ -18,13 +18,14 @@ export class LocationPage {
   constructor(
     public appCtrl: App,
     public locationService: LocationService,
-    public storage: Storage
+    public storage: Storage,
+    private geolocation: Geolocation
   ) {
     this.subscribeToSearch();
    }
 
   ionViewDidLoad() {
-    Geolocation.getCurrentPosition()
+    this.geolocation.getCurrentPosition()
       .then((resp) => {
         let { latitude, longitude } = resp.coords;
         this.searchByCoordinates(latitude, longitude);

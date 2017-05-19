@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { Platform, App } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 import { ENV } from '../env';
 import { CredentialsService } from '../providers/credentials.service';
 import { StorageService } from '../providers/storage.service';
 import { ConcertDatesPage } from '../pages/concert-dates/concert-dates';
 import { LoginPage } from '../pages/login/login';
+import { LocationPage } from '../pages/location/location';
 
 @Component({
   templateUrl: 'app.html'
@@ -13,18 +15,20 @@ import { LoginPage } from '../pages/login/login';
 export class MyApp {
 
   constructor(
-    platform: Platform,
-    public appController: App,
-    public credentialsService: CredentialsService,
-    public storage: StorageService
+    private platform: Platform,
+    private appController: App,
+    private credentialsService: CredentialsService,
+    private storage: StorageService,
+    private statusBar: StatusBar,
+    private splashscreen: SplashScreen
   ) {
     platform.ready()
     .then(() => storage.getAll('locationId', 'credentials'))
     .then(res => {
       this.setupDev();
       this.redirect(res);
-      StatusBar.styleDefault();
-      Splashscreen.hide();
+      statusBar.styleDefault();
+      splashscreen.hide();
     });
   }
 
@@ -37,7 +41,7 @@ export class MyApp {
   }
 
   private redirect([ location, credentials ]: any[]) {
-    let page: any = LoginPage;
+    let page: any = location ? LoginPage : LocationPage;
 
     if (location && credentials.isDefined()) page = ConcertDatesPage;
 

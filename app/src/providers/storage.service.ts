@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { CredentialsModel } from '../models/credentials.model';
+import storageConfig from '../config/storage.config';
 
 @Injectable()
 export class StorageService extends Storage {
@@ -11,7 +12,7 @@ export class StorageService extends Storage {
   constructor(
     public storage: Storage
   ) {
-  	super();
+  	super(storageConfig);
   }
 
   getAll(...keys: string[]): Promise<any[]>  {

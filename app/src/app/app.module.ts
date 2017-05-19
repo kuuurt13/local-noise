@@ -1,8 +1,19 @@
 import { NgModule, ErrorHandler } from '@angular/core';
+import { HttpModule } from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
-import { Geolocation } from 'ionic-native';
+import { IonicStorageModule } from '@ionic/storage';
+
+// Native
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { Geolocation } from '@ionic-native/geolocation';
+
+//App
 import { MyApp } from './app.component';
+
+// Config
+import storageConfig from '../config/storage.config';
 
 // Providers
 import { ProvidersModule } from '../providers/providers.module';
@@ -20,6 +31,13 @@ import { ArtistImageComponent } from '../components/artist-image/artist-image';
 
 
 @NgModule({
+  imports: [
+    BrowserModule,
+    HttpModule,
+    IonicModule.forRoot(MyApp),
+    ProvidersModule,
+    IonicStorageModule.forRoot(storageConfig)
+  ],
   declarations: [
     MyApp,
     LoginPage,
@@ -30,11 +48,6 @@ import { ArtistImageComponent } from '../components/artist-image/artist-image';
     ArtistImageComponent,
     ConcertDetailPage
   ],
-  imports: [
-    IonicModule.forRoot(MyApp),
-    ProvidersModule
-  ],
-  bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     LoginPage,
@@ -45,9 +58,11 @@ import { ArtistImageComponent } from '../components/artist-image/artist-image';
     ConcertDetailPage
   ],
   providers: [
-    Storage,
+    StatusBar,
+    SplashScreen,
     Geolocation,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
-  ]
+  ],
+  bootstrap: [IonicApp]
 })
 export class AppModule {}
