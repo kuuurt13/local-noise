@@ -1,6 +1,6 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
+  "name": "local-noise",
+  "author": "kuuurt13",
   "version": "0.0.1",
   "homepage": "http://ionicframework.com/",
   "private": true,
@@ -47,5 +47,5 @@
   "cordovaPlatforms": [
     "android"
   ],
-  "description": "app: An Ionic project"
+  "description": "LocalNoise: An Ionic project"
 }
