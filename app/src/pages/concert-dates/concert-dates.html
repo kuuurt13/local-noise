@@ -7,21 +7,28 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
 
   <ion-list inset>
 
     <ion-card *ngFor="let concert of concerts">
-      <img src="assets/images/temp-concert-image.png" />
-
-      <ion-card-content>
-        <ion-card-title>
-          {{ concert?.start }} - {{ concert?.end }}
+      <div class="gradient-background">
+        <ion-card-title text-center>
+          {{ concert?.title }}
         </ion-card-title>
-        <p>Concerts: {{ concert.concerts.totalEntries }}</p>
-        <button ion-button full icon-right color="danger" small (click)="goToConcerts(concert)">
-          <div>View Concerts</div>
-        </button>
+      </div>
+      <ion-card-content>
+        <ion-fab>
+          <button ion-fab>{{ concert.concerts.totalEntries }}</button>
+        </ion-fab>
+        <ion-row>
+          <ion-col text-right>
+            <button ion-button clear icon-right text-right color="primary" small (click)="goToConcerts(concert)">
+              View Concerts <ion-icon name="md-arrow-forward"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+
       </ion-card-content>
     </ion-card>
 

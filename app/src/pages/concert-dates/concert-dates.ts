@@ -11,13 +11,13 @@ import { ConcertsPage } from '../concerts/concerts';
 export class ConcertDatesPage {
   private page: number = 0;
   private location: string;
-  private concerts: any[] = [];
+  concerts: any[] = [];
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public storage: Storage,
-    public concertService: ConcertService
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private storage: Storage,
+    private concertService: ConcertService
   ) {}
 
   ionViewDidLoad() {
@@ -30,7 +30,7 @@ export class ConcertDatesPage {
 
   }
 
-  public goToConcerts(concert): void {
+  goToConcerts(concert): void {
     this.navCtrl.push(ConcertsPage, {
       location: this.location,
       startDate: concert.start,

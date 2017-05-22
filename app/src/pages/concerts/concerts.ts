@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { NavController, NavParams } from 'ionic-angular';
 import { ConcertService } from '../../providers/concert.service';
 import { PlaylistService } from '../../providers/playlist.service';
@@ -13,7 +14,8 @@ export class ConcertsPage {
   private endDate: string;
   private page: number = 0;
   private location: string;
-  private concerts: any[] = [];
+  private datePipe: DatePipe = new DatePipe('en-US');
+  concerts: any[] = [];
 
   constructor(
     public navCtrl: NavController,
@@ -50,7 +52,7 @@ export class ConcertsPage {
       .map(({ concerts }) => {
         const { results = [], totalEntries = 0 } = concerts;
 
-        this.concerts = this.concerts.concat(results);
+        this.concerts = this.concerts.concat(this.mapDates(results));
 
         if (infiniteScroll) {
           infiniteScroll.complete();
@@ -68,5 +70,16 @@ export class ConcertsPage {
 
   private getPlaylistName(): string {
     return `${this.location}: ${this.startDate} - ${this.endDate}`;
+  }
+
+  private mapDates(concerts:  any[]): any[] {
+    return concerts.map(concert => {
+      concert.date = {
+        month: this.datePipe.transform(new Date(concert.start.date), 'MMM'),
+        day: this.datePipe.transform(new Date(concert.start.date), 'd')
+      };
+
+      return concert;
+    });
   }
 }

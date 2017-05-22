@@ -1,3 +1,20 @@
 page-concert-dates {
 
+  ion-card {
+    ion-card-content.card-content {
+      position: relative;
+      padding: 0;
+    }
+
+    ion-card-title.card-title {
+      margin: 0;
+      font-size: 1.9em;
+      padding: 0.5em 0 1.2em 0;
+    }
+
+    ion-fab {
+      left: 10px;
+      top: -29px;
+    }
+  }
 }

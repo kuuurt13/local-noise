@@ -8,26 +8,42 @@
 
 
 <ion-content padding>
-  <button ion-button full icon-right color="danger" small (click)="exportConcerts(concerts)">
+  <button ion-button full icon-right color="priamry" small (click)="exportConcerts(concerts)">
     <div>Export Concerts</div>
   </button>
-  <ion-list inset>
+  <ion-list>
     <ion-card *ngFor="let concert of concerts">
+      <ion-card-title>
+        <ion-row>
+          <ion-col class="date-month-day" text-center>
+            <div>{{ concert?.date?.month }}</div>
+            <div>{{ concert?.date?.day }}</div>
+          </ion-col>
+          <ion-col class="concert-title">
+            {{ concert?.performance[0]?.displayName }}
+          </ion-col>
+        </ion-row>
+      </ion-card-title>
       <ion-card-content>
         <ion-row>
-          <ion-col width-33>
+          <ion-col class="artist-image">
             <artist-image [artist]="concert?.performance[0]?.artist"></artist-image>
           </ion-col>
           <ion-col>
-            <h2>{{ concert.displayName }}</h2>
-            <p>{{ concert.location.city }}</p>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col text-right>
-            <button ion-button clear (click)="goToConcert(concert)">
-              View&nbsp;<ion-icon name="arrow-forward"></ion-icon>
-            </button>
+            <ion-row class="concert-details">
+              <ion-col>
+                <p>{{ concert.venue.displayName }}</p>
+                <p>{{ concert.location.city }}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row class="concert-link">
+              <ion-col text-right no-padding>
+                <button ion-button clear alt (click)="goToConcert(concert)">
+                  View Concert&nbsp;&nbsp;
+                  <ion-icon name="arrow-forward"></ion-icon>
+                </button>
+              </ion-col>
+            </ion-row>
           </ion-col>
         </ion-row>
       </ion-card-content>

@@ -1,3 +1,35 @@
-page-concerts {
+$secondary: map-get($colors, 'secondary');
 
+page-concerts ion-card {
+  ion-card-content.card-content {
+    padding: 0;
+  }
+
+  ion-card-title.card-title {
+    padding: 3px;
+    color: $primary;
+    border-bottom: solid 1px rgba(105, 186, 225, 0.57);
+  }
+
+  .date-month-day {
+    font-size: 0.5em;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 0.5em;
+  }
+
+  .concert-title {
+    font-size: 0.8em;
+    padding-left: 9px;
+  }
+
+  .artist-image {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 25%;
+  }
+
+  .concert-details p {
+    color: $secondary;
+  }
 }
