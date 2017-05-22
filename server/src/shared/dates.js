@@ -25,7 +25,8 @@ export function chunkDates(date, size, offset = 1) {
 
     dates.push({
       start: format(start, 'M/D/YYYY'),
-      end: format(end, 'M/D/YYYY')
+      end: format(end, 'M/D/YYYY'),
+      title: `${format(start, 'MMM D')} - ${format(end, 'MMM D')}`
     });
   }
 
