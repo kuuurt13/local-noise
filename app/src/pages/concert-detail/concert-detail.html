@@ -1,18 +1,17 @@
-<ion-header>
-
-  <ion-navbar>
-    <ion-title>{{ concert.displayName }}</ion-title>
-  </ion-navbar>
-
+<ion-header clear>
+  <ion-navbar></ion-navbar>
 </ion-header>
 
 
-<ion-content padding>
-  <h1>{{ concert.displayName }}</h1>
-
+<ion-content>
+  <div class="concert-info">
+    <h1>{{ concert?.performance[0]?.displayName }}</h1>
+    <h3>{{ concert?.start?.datetime | date:'MMM, d @ h:mm a' }}</h3>
+    <strong>{{ concert.venue.displayName }}, {{ concert.location.city }}</strong>
+  </div>
   <ion-card>
     <ion-card-header>
-      <h2>Lineup</h2>
+      <h1>Lineup</h1>
     </ion-card-header>
     <ion-card-content>
       <ion-list>

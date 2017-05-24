@@ -1,3 +1,14 @@
 ion-navbar .toolbar-title {
   color: map-get($colors, 'primary');
 }
+
+ion-header[clear] {
+  &:after {
+    background-image: none;
+  }
+
+  ion-navbar .toolbar-background {
+    background: transparent;
+    border: none;
+  }
+}
