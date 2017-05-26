@@ -16,6 +16,7 @@ export class ConcertsPage {
   private location: string;
   private datePipe: DatePipe = new DatePipe('en-US');
   concerts: any[] = [];
+  title: string;
 
   constructor(
     public navCtrl: NavController,
@@ -24,8 +25,11 @@ export class ConcertsPage {
     public playlistService: PlaylistService
   ) {
     this.location = navParams.get('location');
-    this.startDate = navParams.get('startDate');
-    this.endDate = navParams.get('endDate');
+    const { start, end, title } = navParams.get('concert');
+
+    this.startDate = start;
+    this.endDate = end;
+    this.title = title;
   }
 
   ionViewDidLoad() {

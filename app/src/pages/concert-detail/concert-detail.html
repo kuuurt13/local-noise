@@ -7,7 +7,8 @@
   <div class="concert-info">
     <h1>{{ concert?.performance[0]?.displayName }}</h1>
     <h3>{{ concert?.start?.datetime | date:'MMM, d @ h:mm a' }}</h3>
-    <strong>{{ concert.venue.displayName }}, {{ concert.location.city }}</strong>
+    <h5>{{ concert.venue.displayName }}</h5>
+    <p><strong>{{ concert.location.city }}</strong></p>
   </div>
   <ion-card>
     <ion-card-header>

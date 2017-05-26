@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Concerts</ion-title>
+    <ion-title>{{locationName}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -14,13 +14,11 @@
     <ion-card *ngFor="let concert of concerts">
       <div class="gradient-background">
         <ion-card-title text-center>
-          {{ concert?.title }}
+          <h1>{{ concert?.title }}</h1>
+          <h3>{{ concert.concerts.totalEntries }} Concerts</h3>
         </ion-card-title>
       </div>
       <ion-card-content>
-        <ion-fab>
-          <button ion-fab>{{ concert.concerts.totalEntries }}</button>
-        </ion-fab>
         <ion-row>
           <ion-col text-right>
             <button ion-button clear icon-right text-right color="primary" small (click)="goToConcerts(concert)">

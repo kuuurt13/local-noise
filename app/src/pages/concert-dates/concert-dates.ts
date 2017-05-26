@@ -10,7 +10,8 @@ import { ConcertsPage } from '../concerts/concerts';
 })
 export class ConcertDatesPage {
   private page: number = 0;
-  private location: string;
+  locationId: string;
+  locationName: string;
   concerts: any[] = [];
 
   constructor(
@@ -21,10 +22,13 @@ export class ConcertDatesPage {
   ) {}
 
   ionViewDidLoad() {
-    this.storage
-      .get('locationId')
-      .then(location =>  {
-        this.location = location;
+    const storageKeys = ['locationId', 'locationName'];
+    const locations = storageKeys.map(key => this.storage.get(key));
+
+    Promise.all(locations)
+      .then(([id, name]) =>  {
+        this.locationId = id;
+        this.locationName = name;
         this.getConcerts();
       });
 
@@ -32,9 +36,8 @@ export class ConcertDatesPage {
 
   goToConcerts(concert): void {
     this.navCtrl.push(ConcertsPage, {
-      location: this.location,
-      startDate: concert.start,
-      endDate: concert.end
+      location: this.locationId,
+      concert
     });
   }
 
@@ -42,7 +45,7 @@ export class ConcertDatesPage {
     this.page++;
 
     this.concertService
-      .searchDates(this.location, this.page)
+      .searchDates(this.locationId, this.page)
       .map(concerts => {
         this.concerts = this.concerts.concat(concerts);
 

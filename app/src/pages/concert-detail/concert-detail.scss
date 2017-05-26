@@ -9,8 +9,35 @@ page-concert-detail ion-content.content {
   color: $light;
 
   .concert-info {
-    margin: 0 0 40px 0;
+    max-width: 90%;
     text-align: center;
+    margin: 0 auto 40px auto;
+  }
+
+  .concert-info {
+    max-width: 90%;
+    text-align: center;
+    margin: 0 auto 40px auto;
+  }
+
+  .concert-info h1,
+  .concert-info h3,
+  .concert-info h5,
+  .concert-info p {
+    margin: 0 0 3px 0;
+  }
+
+  .concert-info h3 {
+    font-size: 1.6em;
+  }
+
+  .concert-info h5 {
+    margin-top: 9px;
+    font-size: 1.2em;
+  }
+
+  .concert-info p {
+    font-size: 1em;
   }
 
   ion-card.card {
