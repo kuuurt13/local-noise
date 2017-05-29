@@ -23,12 +23,12 @@ export class MyApp {
     private splashscreen: SplashScreen
   ) {
     platform.ready()
+    .then(() => this.setupDev())
     .then(() => storage.getAll('locationId', 'credentials'))
     .then(res => {
-      this.setupDev();
-      this.redirect(res);
       statusBar.styleDefault();
       splashscreen.hide();
+      this.redirect(res);
     });
   }
 

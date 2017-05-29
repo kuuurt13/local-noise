@@ -8,6 +8,10 @@ import { IonicStorageModule } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Geolocation } from '@ionic-native/geolocation';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+
+// Modules
+import { SharedModule } from '../shared/shared.module';
 
 //App
 import { MyApp } from './app.component';
@@ -36,7 +40,8 @@ import { ArtistImageComponent } from '../components/artist-image/artist-image';
     HttpModule,
     IonicModule.forRoot(MyApp),
     ProvidersModule,
-    IonicStorageModule.forRoot(storageConfig)
+    IonicStorageModule.forRoot(storageConfig),
+    SharedModule
   ],
   declarations: [
     MyApp,
@@ -61,6 +66,7 @@ import { ArtistImageComponent } from '../components/artist-image/artist-image';
     StatusBar,
     SplashScreen,
     Geolocation,
+    InAppBrowser,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ],
   bootstrap: [IonicApp]
