@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "npm run build && node dist/index.js",
-    "dev": "npm run redis:start && nodemon --exec babel-node src/index.js",
+    "dev": "nodemon --exec babel-node src/index.js",
     "build": "babel src --out-dir dist",
     "debug": "babel src --out-dir dist --watch --source-maps",
     "redis:start": "redis-server &",
@@ -18,7 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.15.3",
+    "axios": "^0.16.1",
     "body-parser": "^1.15.2",
     "bull": "^2.1.0",
     "date-fns": "^1.21.1",

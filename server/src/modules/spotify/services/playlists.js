@@ -26,10 +26,13 @@ async function create(params) {
   } catch (err) {
     // TODO: Make a function
     if (err.status === 401 && attempts <= retryAttempts) {
-      let token = await authService.renewToken(refresh);
-      attempts++;
-
-      return create({ ...params, token, attempts });
+      try {
+        let token = await authService.renewToken(refresh);
+        attempts++;
+        create({ ...params, token, attempts });
+      } catch (err) {
+        throw { status: 401, message: 'Invalid Refresh token' };
+      }
     } else {
       throw err;
     }
