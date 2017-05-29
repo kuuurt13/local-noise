@@ -15,15 +15,17 @@ export class ArtistImageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.setArtistImage();
+    this.setArtistImage(this.artist || {});
   }
 
-  private setArtistImage(): void {
+  private setArtistImage(artist: any): void {
     const { artistsUrl } = this.api;
-    const { id } = this.artist;
+    const { id } = artist;
 
     if (id) {
       this.artistImageUrl = `${artistsUrl}/${id}/image?size=${this.size}`;
+    } else {
+      this.artistImageUrl = 'assets/images/no-image.png';
     }
   }
 }

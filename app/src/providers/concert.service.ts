@@ -32,7 +32,7 @@ export class ConcertService extends Api {
       page: page || 1,
     };
 
-    return this.get(url, params);
+    return this.get(url, params).map(this.removeMissigArtists);
   }
 
   private currentDate(): string {
@@ -42,5 +42,13 @@ export class ConcertService extends Api {
       today.getDate(),
       today.getFullYear()
     ].join('/');
+  }
+
+  private removeMissigArtists(res: any): boolean {
+    if (res.concerts.results) {
+      res.concerts.results = res.concerts.results.filter(concert => concert.performance.length);
+    }
+
+    return res;
   }
 }
