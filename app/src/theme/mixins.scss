@@ -1,0 +1,6 @@
+@mixin gradient-background {
+  background: $primary;
+  background: linear-gradient(135deg, $gradient-start, $primary);
+  background: -webkit-linear-gradient(135deg, $gradient-start, $primary);
+  color: $light;
+}

@@ -1,12 +1,7 @@
 $primary: map-get($colors, 'primary');
-$gradient-start: map-get($colors, 'gradient-start');
-$light: map-get($colors, 'light');
 
 page-concert-detail ion-content.content {
-  background: $primary;
-  background: linear-gradient(135deg, $gradient-start, $primary);
-  background: -webkit-linear-gradient(135deg, $gradient-start, $primary);
-  color: $light;
+  @include gradient-background;
 
   .concert-info {
     max-width: 90%;

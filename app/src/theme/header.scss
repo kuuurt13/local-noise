@@ -12,3 +12,12 @@ ion-header[clear] {
     border: none;
   }
 }
+
+ion-navbar[clear] .toolbar-background {
+  background: transparent;
+  border: none;
+}
+
+ion-content[inner-nav] ion-navbar.toolbar {
+  position: absolute;
+}

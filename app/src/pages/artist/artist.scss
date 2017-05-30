@@ -1,3 +1,46 @@
-page-artist {
+page-artist ion-content.content {
+  @include gradient-background;
+  color: #000;
 
+  .artist-image {
+    min-height: 250px;
+  }
+
+  .artist-image artist-image {
+    position: absolute;
+    left: 0;
+    right: 0;
+    opacity: 0.5;
+    z-index: -1;
+  }
+
+  .artist-image img {
+    width: 100%;
+  }
+
+  .artist-info {
+    top: 6em;
+    position: relative;
+    color: #fff;
+  }
+
+  .artist-info h1 {
+    margin: 0;
+  }
+
+  button.button-full {
+    margin: 0;
+    box-shadow: none;
+    border: none;
+  }
+
+  ion-card-header h1 {
+    color: $primary;
+  }
+
+  ion-card {
+    min-height: 70vh;
+    margin: 0;
+    border-radius: none;
+  }
 }

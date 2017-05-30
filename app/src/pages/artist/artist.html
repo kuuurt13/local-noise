@@ -1,28 +1,33 @@
-<ion-header>
+<ion-content inner-nav text-center>
+  <ion-navbar clear></ion-navbar>
 
-  <ion-navbar>
-    <ion-title>{{artist.displayName}}</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding text-center>
-  <artist-image [artist]="artist" [size]="'lg'"></artist-image>
-  <button ion-button full icon-right color="danger" small
-    (click)="createPlaylist(artist.displayName, set.fullSetlist)">
+  <div class="artist-image">
+    <artist-image [artist]="artist" [size]="'lg'"></artist-image>
+    <div class="artist-info">
+      <h1>{{ artist.displayName }}</h1>
+    </div>
+  </div>
+  <button ion-button full icon-right color="primary" small (click)="createPlaylist(artist.displayName, set.fullSetlist)">
     <div>Create Playlist</div>
   </button>
-  <ion-card *ngFor="let song of set.fullSetlist">
-      <ion-card-content>
-        <ion-row>
-          <ion-col *ngIf="song.cover">
-            {{ song.name }} ({{ song.cover.name }} Cover)
-          </ion-col>
-          <ion-col *ngIf="!song.cover">
-            {{ song.name }}
-          </ion-col>
-        </ion-row>
-      </ion-card-content>
-    </ion-card>
+  <ion-card>
+    <ion-card-header text-left>
+      <h1>Setlist</h1>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list *ngIf="set.fullSetlist">
+        <ion-item *ngFor="let song of set.fullSetlist">
+          <h2 *ngIf="song.cover">
+            <ion-icon name="musical-notes"></ion-icon>
+            &nbsp;{{ song.name }} ({{ song.cover.name }} Cover)
+          </h2>
+          <h2 *ngIf="!song.cover">
+            <ion-icon name="musical-notes"></ion-icon>
+            &nbsp;{{ song.name }}
+          </h2>
+        </ion-item>
+      </ion-list>
+      <h1 *ngIf="!set.fullSetlist">No Setlist Found</h1>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
