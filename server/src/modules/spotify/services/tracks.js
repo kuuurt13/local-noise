@@ -22,7 +22,7 @@ async function getTrack({ track, artist, token, ignoreCache }) {
       }
     }
 
-    const { tracks } = await spotify.search('tracks', { track, artist });
+    const { tracks = { items: [] } } = await spotify.search('tracks', { track, artist, token });
 
     const { name, id } = tracks.items.find(item => {
       const { name, artists } = item;
@@ -32,10 +32,10 @@ async function getTrack({ track, artist, token, ignoreCache }) {
     if (name && id) {
       spotifyCache.set(artist, {
         id,
-        ...mapTrack(track, id)
+        ...mapTrack(track || name, id)
       });
 
-      return mapTrack(track, id);
+      return mapTrack(track || name, id);
     }
 
     return {};
@@ -121,9 +121,7 @@ async function getByArtists(artists, token) {
 }
 
 function mapTrack(name, id) {
-  let track = {};
-  track[name] = id;
-  return track;
+  return { [name]: id };
 }
 
 function getTracksByArtistId(id, token) {

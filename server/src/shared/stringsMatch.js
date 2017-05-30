@@ -8,7 +8,8 @@ const wildcards = [
   ['studio'],
   ['acoustic'],
   ['version'],
-  [/^(i)/i]
+  [/^(i)/i],
+  ['"']
 ]
 .map(([a, b]) => {
   a = typeof a !== 'object' ? new RegExp(`(${a})`, 'ig') : a;

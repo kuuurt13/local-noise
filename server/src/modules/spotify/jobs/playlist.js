@@ -2,6 +2,7 @@ import Queue from 'bull';
 import { queueIp, queuePort } from '../../../configs/app';
 import tracksService from '../services/tracks';
 import playlistService from '../services/playlists';
+import authService from '../services/auth';
 
 let addTracksQueue = Queue('Add Tracks To Playlist', queuePort, queueIp);
 addTracksQueue.process(addTracksToPlaylist);
@@ -16,6 +17,8 @@ async function addTracksToPlaylist(job, done) {
   let artistTracks;
 
   try {
+    token = await authService.renewToken(refresh);
+
     if (tracks) {
       artistTracks = await tracksService.getAllTracks({ tracks, token });
     } else if (artists) {

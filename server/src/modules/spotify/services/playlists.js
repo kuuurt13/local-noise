@@ -29,7 +29,7 @@ async function create(params) {
       try {
         let token = await authService.renewToken(refresh);
         attempts++;
-        create({ ...params, token, attempts });
+        return create({ ...params, token, attempts });
       } catch (err) {
         throw { status: 401, message: 'Invalid Refresh token' };
       }
