@@ -18,11 +18,11 @@ async function create(params) {
       throw { status: 400, message: 'Requires artist/tracks' };
     }
 
-    const { id } = await createPlaylist(name, userId, token);
+    const { id, uri } = await createPlaylist(name, userId, token);
 
     playlistQueue.addTracks({ id, artists, tracks, userId, token, refresh });
 
-    return { id, token, attempts };
+    return { id, uri, token, attempts };
   } catch (err) {
     // TODO: Make a function
     if (err.status === 401 && attempts <= retryAttempts) {
