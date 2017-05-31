@@ -1,0 +1,13 @@
+$primary: map-get($colors, 'primary');
+
+artist-image {
+  img {
+    opacity: 0;
+    background: lighten($primary, 20%);
+    transition: 350ms ease-in;
+  }
+
+  img.active {
+    opacity: 1;
+  }
+}

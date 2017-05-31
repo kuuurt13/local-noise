@@ -1,7 +1,0 @@
-$primary: map-get($colors, 'primary');
-
-artist-image {
-  img {
-    background: lighten($primary, 20%)
-  }
-}

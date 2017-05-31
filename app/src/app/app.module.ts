@@ -12,15 +12,13 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 // Modules
 import { SharedModule } from '../shared/shared.module';
+import { ProvidersModule } from '../providers/providers.module';
 
 //App
 import { MyApp } from './app.component';
 
 // Config
 import storageConfig from '../config/storage.config';
-
-// Providers
-import { ProvidersModule } from '../providers/providers.module';
 
 // Pages
 import { LoginPage } from '../pages/login/login';
@@ -29,9 +27,6 @@ import { ConcertDatesPage } from '../pages/concert-dates/concert-dates';
 import { ConcertsPage } from '../pages/concerts/concerts';
 import { ConcertDetailPage } from '../pages/concert-detail/concert-detail';
 import { ArtistPage } from '../pages/artist/artist';
-
-// Components
-import { ArtistImageComponent } from '../components/artist-image/artist-image';
 
 
 @NgModule({
@@ -50,7 +45,6 @@ import { ArtistImageComponent } from '../components/artist-image/artist-image';
     ConcertDatesPage,
     ConcertsPage,
     ArtistPage,
-    ArtistImageComponent,
     ConcertDetailPage
   ],
   entryComponents: [
