@@ -1,5 +1,12 @@
 $secondary: map-get($colors, 'secondary');
 
+page-concerts .export-playlist {
+  position: absolute;
+  top: -4px;
+  right: 13px;
+  font-size: 1.5em;
+}
+
 page-concerts ion-card {
   ion-card-content.card-content {
     padding: 0;

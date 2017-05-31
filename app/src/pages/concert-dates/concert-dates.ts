@@ -37,6 +37,7 @@ export class ConcertDatesPage {
   goToConcerts(concert): void {
     this.navCtrl.push(ConcertsPage, {
       location: this.locationId,
+      locationName: this.locationName,
       concert
     });
   }

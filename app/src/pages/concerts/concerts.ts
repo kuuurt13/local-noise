@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+
 import { NavController, NavParams } from 'ionic-angular';
 import { ConcertService } from '../../providers/concert.service';
 import { PlaylistService } from '../../providers/playlist.service';
@@ -14,6 +16,7 @@ export class ConcertsPage {
   private endDate: string;
   private page: number = 0;
   private location: string;
+  private locationName: string;
   private datePipe: DatePipe = new DatePipe('en-US');
   concerts: any[] = [];
   title: string;
@@ -22,9 +25,11 @@ export class ConcertsPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public concertService: ConcertService,
-    public playlistService: PlaylistService
+    public playlistService: PlaylistService,
+    public appBrowser: InAppBrowser
   ) {
     this.location = navParams.get('location');
+    this.locationName = navParams.get('locationName');
     const { start, end, title } = navParams.get('concert');
 
     this.startDate = start;
@@ -39,7 +44,7 @@ export class ConcertsPage {
   exportConcerts(concerts) {
     this.playlistService
       .createArtistsPlaylist(this.getArtists(concerts), this.getPlaylistName())
-      .subscribe();
+      .subscribe(({ uri }) => this.appBrowser.create(uri, '_system', 'location=no'));
   }
 
   goToConcert(concert: any) {
@@ -73,7 +78,7 @@ export class ConcertsPage {
   }
 
   private getPlaylistName(): string {
-    return `${this.location}: ${this.startDate} - ${this.endDate}`;
+    return `${this.locationName}: ${this.startDate} - ${this.endDate}`;
   }
 
   private mapDates(concerts:  any[]): any[] {

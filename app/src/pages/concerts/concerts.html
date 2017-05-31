@@ -1,16 +1,14 @@
 <ion-header>
-
   <ion-navbar>
-    <ion-title>{{title}}</ion-title>
+    <ion-title>
+      {{title}}
+      <ion-icon class="export-playlist" name="cloud-download" (click)="exportConcerts(concerts)" color="primary"></ion-icon>
+    </ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
-  <button ion-button full icon-right color="primary" small (click)="exportConcerts(concerts)">
-    <div>Export Concerts</div>
-  </button>
   <ion-list>
     <ion-card *ngFor="let concert of concerts">
       <ion-card-title>
