@@ -74,7 +74,7 @@ export class ConcertsPage {
   getArtists(concerts: any[]): string[] {
     return concerts.map(concert => {
       return concert.performance[0].artist.displayName;
-    });
+    }).reverse();
   }
 
   private getPlaylistName(): string {
