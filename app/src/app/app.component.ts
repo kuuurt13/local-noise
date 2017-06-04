@@ -41,7 +41,14 @@ export class MyApp {
   }
 
   private redirect([ location, credentials ]: any[]) {
-    let page: any = this.credsService.isDefined(credentials) ? LocationPage : LoginPage;
+    let page: any;
+
+    if (credentials) {
+      this.credsService.set(credentials);
+      page = LocationPage;
+    } else {
+      page = LoginPage;
+    }
 
     if (location && credentials.isDefined()) page = ConcertDatesPage;
 
