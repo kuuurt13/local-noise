@@ -41,11 +41,15 @@ export class ArtistPage {
   private getSetlist() {
     const { identifier } = this.artist;
 
-    if (identifier && identifier[0].mbid) {
+    if (identifier.length && identifier[0].mbid) {
       this.setlistService
         .getSetlist(identifier[0].mbid)
-        .map(setlist => this.set = setlist)
-        .subscribe();
+        .subscribe(
+          setlist => this.set = setlist,
+          err => this.set = null
+        );
+    } else {
+      this.set = null;
     }
   }
 }

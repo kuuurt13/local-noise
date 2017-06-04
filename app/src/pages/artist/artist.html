@@ -15,7 +15,7 @@
       <h1>Setlist</h1>
     </ion-card-header>
     <ion-card-content>
-      <ion-list *ngIf="set.fullSetlist">
+      <ion-list *ngIf="set?.fullSetlist">
         <ion-item *ngFor="let song of set.fullSetlist">
           <h2 *ngIf="song.cover">
             <ion-icon name="musical-notes"></ion-icon>
@@ -27,7 +27,7 @@
           </h2>
         </ion-item>
       </ion-list>
-      <h1 *ngIf="!set.fullSetlist">No Setlist Found</h1>
+      <h1 *ngIf="set === null">No Setlist Found</h1>
     </ion-card-content>
   </ion-card>
 </ion-content>
