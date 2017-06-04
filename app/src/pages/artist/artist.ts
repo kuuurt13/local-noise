@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+
 import { SetlistService } from '../../providers/setlist.service';
 import { PlaylistService } from '../../providers/playlist.service';
 
@@ -16,7 +18,8 @@ export class ArtistPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public setlistService: SetlistService,
-    public playlistService: PlaylistService
+    public playlistService: PlaylistService,
+    private appBrowser: InAppBrowser
   ) {
     this.artist = navParams.get('artist');
   }
@@ -35,7 +38,7 @@ export class ArtistPage {
 
     this.playlistService
       .createTracksPlaylist(tracks, `${this.artist.displayName} Setlist`)
-      .subscribe();
+      .subscribe(({ uri }) => this.appBrowser.create(uri, '_system', 'location=no'));
   }
 
   private getSetlist() {
