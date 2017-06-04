@@ -25,4 +25,8 @@ export class CredentialsService {
   subscribe(): ReplaySubject<any> {
     return this.credentialSubject;
   }
+
+  isDefined(creds: any): boolean {
+    return creds && creds.id && creds.refresh && creds.token;
+  }
 }

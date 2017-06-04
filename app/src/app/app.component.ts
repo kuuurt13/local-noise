@@ -17,7 +17,7 @@ export class MyApp {
   constructor(
     private platform: Platform,
     private appController: App,
-    private credentialsService: CredentialsService,
+    private credsService: CredentialsService,
     private storage: StorageService,
     private statusBar: StatusBar,
     private splashscreen: SplashScreen
@@ -36,12 +36,12 @@ export class MyApp {
     const { ENVIRONMENT, SPOTIFY_CREDENTIALS } = ENV as any;
 
     if (ENVIRONMENT === 'dev' && SPOTIFY_CREDENTIALS) {
-      this.credentialsService.set(SPOTIFY_CREDENTIALS);
+      this.credsService.set(SPOTIFY_CREDENTIALS);
     }
   }
 
   private redirect([ location, credentials ]: any[]) {
-    let page: any = location ? LoginPage : LocationPage;
+    let page: any = this.credsService.isDefined(credentials) ? LocationPage : LoginPage;
 
     if (location && credentials.isDefined()) page = ConcertDatesPage;
 
