@@ -53,7 +53,6 @@ export class PlaylistService extends Api {
 
   private subscribeToCredentials() {
     this.credentials$
-      .map(creds => this.credentials = creds)
-      .subscribe();
+      .subscribe(creds => this.credentials = creds);
   }
 }
